@@ -37,6 +37,7 @@ _COMPARE18_ATYPICAL_AFFECT_LABEL_MAP = {
 class Compare18AtypicalAffectParser(LoggingMixin, Parser):
 
     def __init__(self, basedir: Path):
+        print("parsers.compare18_atypical_affect.py Compare18AtypicalAffectParser._init_")
         super().__init__(basedir)
 
         self._metadata_cache = None
@@ -44,9 +45,11 @@ class Compare18AtypicalAffectParser(LoggingMixin, Parser):
 
     @abc.abstractmethod
     def label_key(self) -> str:
+        print("parsers.compare18_atypical_affect.py Compare18AtypicalAffectParser.label_key")
         pass
 
     def _metadata(self) -> pd.DataFrame:
+        print("parsers.compare18_atypical_affect.py Compare18AtypicalAffectParser._metadata")
         if not self.can_parse():
             raise IOError("unable to parse the ComParE 2018 Atypical Affect dataset at {}".format(self._basedir))
         if self._metadata_cache is None:
@@ -63,6 +66,7 @@ class Compare18AtypicalAffectParser(LoggingMixin, Parser):
         return self._metadata_cache
 
     def can_parse(self) -> bool:
+        print("parsers.compare18_atypical_affect.py Compare18AtypicalAffectParser.can_parse")
         metadata_file = self._basedir / "lab" / "ComParE2018_AtypicalAffect.tsv"
         metadata_file_confidential = self._basedir / "lab" / "ComParE2018_AtypicalAffect.confidential.tsv"
 
@@ -80,6 +84,7 @@ class Compare18AtypicalAffectParser(LoggingMixin, Parser):
 
     @property
     def label_map(self) -> Optional[Mapping[str, int]]:
+        print("parsers.compare18_atypical_affect.py Compare18AtypicalAffectParser.label_map")
         if not self.can_parse():
             raise IOError("Unable to parse ComParE 2018 Atypical Affect data set at {}".format(self._basedir))
 
@@ -87,6 +92,7 @@ class Compare18AtypicalAffectParser(LoggingMixin, Parser):
 
     @property
     def num_instances(self) -> int:
+        print("parsers.compare18_atypical_affect.py Compare18AtypicalAffectParser.num_instances")
         if not self.can_parse():
             raise IOError("Unable to parse ComParE 2018 Atypical Affect data set at {}".format(self._basedir))
 
@@ -95,12 +101,14 @@ class Compare18AtypicalAffectParser(LoggingMixin, Parser):
 
     @property
     def num_folds(self) -> int:
+        print("parsers.compare18_atypical_affect.py Compare18AtypicalAffectParser.num_folds")
         if not self.can_parse():
             raise IOError("Unable to parse ComParE 2018 Atypical Affect data set at {}".format(self._basedir))
 
         return 0
 
     def parse(self) -> Sequence[_InstanceMetadata]:
+        print("parsers.compare18_atypical_affect.py Compare18AtypicalAffectParser.parse")
         if not self.can_parse():
             raise IOError("unable to parse dataset at {}".format(self._basedir))
 

@@ -36,6 +36,7 @@ class _VersionAction(argparse.Action):
                  dest=argparse.SUPPRESS,
                  default=argparse.SUPPRESS,
                  help="show program's version number and exit"):
+        print("main.py  _VersionAction.__init__")
         super(_VersionAction, self).__init__(
             option_strings=option_strings,
             dest=dest,
@@ -45,6 +46,7 @@ class _VersionAction(argparse.Action):
         self.version = version
 
     def __call__(self, parser, namespace, values, option_string=None):
+        print("main.py  _VersionAction.__call__")
         version = self.version
         if version is None:
             version = parser.version
@@ -60,6 +62,7 @@ class AuDeepApp(App):
     """
 
     def __init__(self):
+        print("main.py  AuDeepApp.__init__")
         super(AuDeepApp, self).__init__(
             description="Deep Representation Learning Toolkit for Acoustic Data",
             version="0.9.1",
@@ -68,6 +71,7 @@ class AuDeepApp(App):
         )
 
     def build_option_parser(self, description, version, argparse_kwargs=None):
+        print("main.py  AuDeepApp.build_option_parser")
         argparse_kwargs = argparse_kwargs or {}
         argparse_kwargs["conflict_handler"] = "resolve"
 
@@ -86,6 +90,7 @@ class AuDeepApp(App):
         return parser
 
     def initialize_app(self, argv):
+        print("main.py  AuDeepApp.initialize_app")
         rootLogger = logging.getLogger("")
         rootLogger.handlers[0].setFormatter(logging.Formatter("[%(levelname)s] %(name)s - %(message)s"))
 
@@ -100,9 +105,11 @@ class AuDeepApp(App):
         self.LOG.debug("initializing app")
 
     def prepare_to_run_command(self, cmd):
+        print("main.py  AuDeepApp.prepare_to_run_command")
         self.LOG.debug('prepare_to_run_command %s', cmd.__class__.__name__)
 
     def clean_up(self, cmd, result, err):
+        print("main.py  AuDeepApp.clean_up")
         self.LOG.debug('clean_up %s', cmd.__class__.__name__)
 
 

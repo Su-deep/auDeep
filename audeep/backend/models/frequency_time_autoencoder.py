@@ -80,6 +80,8 @@ class FrequencyTimeAutoencoder:
         f_decoder_feed_previous_prob
         t_decoder_feed_previous_prob
         """
+        print("model.frequency_time_autoencoder.py FrequencyTimeAutoencoder.__init__")
+
 
         # inputs
         self.inputs = inputs
@@ -128,6 +130,7 @@ class FrequencyTimeAutoencoder:
         tf.Tensor
             The number of time steps in the input sequences
         """
+        print("model.frequency_time_autoencoder.py FrequencyTimeAutoencoder.max_time")
         return tf.shape(self.inputs)[0]
 
     @property
@@ -142,6 +145,7 @@ class FrequencyTimeAutoencoder:
         tf.Tensor
             The number of input sequences per batch
         """
+        print("model.frequency_time_autoencoder.py FrequencyTimeAutoencoder.batch_size")
         return tf.shape(self.inputs)[1]
 
     @property
@@ -156,6 +160,7 @@ class FrequencyTimeAutoencoder:
         int
             The number of features in each time step of the input sequence
         """
+        print("model.frequency_time_autoencoder.py FrequencyTimeAutoencoder.num_features")
         return self.inputs.shape.as_list()[2]
 
     @scoped_subgraph
@@ -170,6 +175,7 @@ class FrequencyTimeAutoencoder:
         tf.Tensor
             The target sequences, of shape [max_time, batch_size, num_features]
         """
+        print("model.frequency_time_autoencoder.py FrequencyTimeAutoencoder.targets")
         return self.inputs[::-1, :, ::-1]
 
     @scoped_subgraph
@@ -186,6 +192,7 @@ class FrequencyTimeAutoencoder:
         tf.Tensor
             The input sequences for the frequency encoder
         """
+        print("model.frequency_time_autoencoder.py FrequencyTimeAutoencoder.encoder_frequency_inputs")
 
         # shape: [max_time * batch_size, num_features]
         inputs_flat = flatten_time(self.inputs)
@@ -208,6 +215,7 @@ class FrequencyTimeAutoencoder:
         StandardRNN
             The frequency encoder RNN
         """
+        print("model.frequency_time_autoencoder.py FrequencyTimeAutoencoder.encoder_frequency")
         return StandardRNN(architecture=self.f_encoder_architecture,
                            inputs=self.encoder_frequency_inputs,
                            initial_state=None,
@@ -227,6 +235,7 @@ class FrequencyTimeAutoencoder:
         tf.Tensor
             The input sequences for the time encoder
         """
+        print("model.frequency_time_autoencoder.py FrequencyTimeAutoencoder.encoder_time_inputs")
 
         # shape: [max_time * batch_size, encoder_frequency.state_size]
         encoder_frequency_final_state = self.encoder_frequency.final_state
@@ -249,6 +258,7 @@ class FrequencyTimeAutoencoder:
         StandardRNN
             The time encoder RNN
         """
+        print("model.frequency_time_autoencoder.py FrequencyTimeAutoencoder.encoder_time")
         return StandardRNN(architecture=self.t_encoder_architecture,
                            inputs=self.encoder_time_inputs,
                            initial_state=None,
@@ -269,6 +279,7 @@ class FrequencyTimeAutoencoder:
         tf.Tensor
             The hidden representation of the input sequences, of shape [batch_size, time_decoder_state_size]
         """
+        print("model.frequency_time_autoencoder.py FrequencyTimeAutoencoder.representation")
 
         representation = tf.tanh(linear(input=self.encoder_time.final_state,
                                         output_size=self.t_decoder_architecture.state_size))
@@ -291,6 +302,7 @@ class FrequencyTimeAutoencoder:
         tf.Tensor
             The target sequence for the time decoder
         """
+        print("model.frequency_time_autoencoder.py FrequencyTimeAutoencoder.decoder_time_targets")
         return self.encoder_time_inputs[::-1]
 
     @scoped_subgraph
@@ -307,6 +319,7 @@ class FrequencyTimeAutoencoder:
         tf.Tensor
             The input sequences for the time decoder
         """
+        print("model.frequency_time_autoencoder.py FrequencyTimeAutoencoder.decoder_time_inputs")
         # shape: [max_time, batch_size, encoder_frequency.state_size]
         decoder_time_inputs = self.decoder_time_targets
         decoder_time_inputs = decoder_time_inputs[:self.max_time - 1]
@@ -327,6 +340,7 @@ class FrequencyTimeAutoencoder:
         FeedPreviousRNN
             The time decoder RNN
         """
+        print("model.frequency_time_autoencoder.py FrequencyTimeAutoencoder.decoder_time")
         return FeedPreviousRNN(architecture=self.t_decoder_architecture,
                                inputs=self.decoder_time_inputs,
                                initial_state=self.representation,
@@ -346,6 +360,7 @@ class FrequencyTimeAutoencoder:
         tf.Tensor
             The initial states of the frequency decoder RNN
         """
+        print("model.frequency_time_autoencoder.py FrequencyTimeAutoencoder.decoder_frequency_initial_state")
         # shape: [max_time, batch_size, decoder_time.output_size]
         decoder_frequency_initial_state = self.decoder_time.output
         # shape: [max_time * batch_size, decoder_time.output_size]
@@ -370,6 +385,7 @@ class FrequencyTimeAutoencoder:
         tf.Tensor
            The frequency decoder RNN input sequences, of shape [num_windows, batch_size*max_time, window_width]
         """
+        print("model.frequency_time_autoencoder.py FrequencyTimeAutoencoder.decoder_frequency_inputs")
         # shape: [max_time * batch_size, num_features]
         decoder_frequency_inputs = flatten_time(self.targets)
         # shape: [num_windows, max_time * batch_size, window_width]
@@ -397,6 +413,7 @@ class FrequencyTimeAutoencoder:
         FeedPreviousRNN
             The frequency decoder RNN
         """
+        print("model.frequency_time_autoencoder.py FrequencyTimeAutoencoder.decoder_frequency")
         return FeedPreviousRNN(architecture=self.f_decoder_architecture,
                                inputs=self.decoder_frequency_inputs,
                                initial_state=self.decoder_frequency_initial_state,
@@ -418,6 +435,7 @@ class FrequencyTimeAutoencoder:
         tf.Tensor
             The reconstruction of the input sequence, of shape [max_time, batch_size, num_features]
         """
+        print("model.frequency_time_autoencoder.py FrequencyTimeAutoencoder.reconstruction")
 
         # shape: [num_windows, max_time * batch_size, decoder_frequency.output_size]
         decoder_frequency_output = self.decoder_frequency.output
@@ -457,6 +475,7 @@ class FrequencyTimeAutoencoder:
         tf.Tensor
             Scalar tensor containing the reconstruction loss averaged over the entire input batch
         """
+        print("model.frequency_time_autoencoder.py FrequencyTimeAutoencoder.loss")
         reconstruction = self.reconstruction
 
         if self.mask_silence:
@@ -481,6 +500,7 @@ class FrequencyTimeAutoencoder:
         tf.Operation
             The optimization operation used for training the autoencoder
         """
+        print("model.frequency_time_autoencoder.py FrequencyTimeAutoencoder.optimizer")
         optimizer = tf.train.AdamOptimizer(learning_rate=self.learning_rate)
         gvs = optimizer.compute_gradients(self.loss)
 

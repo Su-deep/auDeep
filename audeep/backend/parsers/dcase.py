@@ -58,6 +58,7 @@ class DCASEParser(LoggingMixin, Parser):
         basedir: pathlib.Path
             The data set base directory
         """
+        print("parsers.dcase.py DCASEParser._init_")
         super().__init__(basedir)
 
         self._metadata_cache = None
@@ -79,6 +80,7 @@ class DCASEParser(LoggingMixin, Parser):
         IOError
             If the data set cannot be parsed
         """
+        print("parsers.dcase.py DCASEParser._metadata")
         if not self.can_parse():
             raise IOError("unable to parse DCASE dataset at {}".format(self._basedir))
         if self._metadata_cache is None:
@@ -105,6 +107,7 @@ class DCASEParser(LoggingMixin, Parser):
         IOError
             If the data set cannot be parsed
         """
+        print("parsers.dcase.py DCASEParser._cv_setup")
         if not self.can_parse():
             raise IOError("unable to parse DCASE dataset at {}".format(self._basedir))
         if self._cv_setup_cache is None:
@@ -129,6 +132,7 @@ class DCASEParser(LoggingMixin, Parser):
         IOError
             If the data set cannot be parsed
         """
+        print("parsers.dcase.py DCASEParser.num_instances")
         return len(self._metadata())
 
     @property
@@ -146,6 +150,7 @@ class DCASEParser(LoggingMixin, Parser):
         IOError
             If the data set cannot be parsed
         """
+        print("parsers.dcase.py DCASEParser.num_folds")
         return 4
 
     @property
@@ -181,6 +186,7 @@ class DCASEParser(LoggingMixin, Parser):
         IOError
             If the data set cannot be parsed
         """
+        print("parsers.dcase.py DCASEParser.label_map")
         return _DCASE_LABEL_MAP
 
     def can_parse(self) -> bool:
@@ -197,6 +203,7 @@ class DCASEParser(LoggingMixin, Parser):
              True, if the data set base directory contains the DCASE 2017 Acoustic Scene Classification development 
                  data set, False otherwise
         """
+        print("parsers.dcase.py DCASEParser.can_parse")
         meta_txt_exists = (self._basedir / "meta.txt").exists()
         cv_setup_exists = [(self._basedir / "evaluation_setup" / ("fold%d_train.txt" % (fold + 1))).exists()
                            for fold in range(self.num_folds)]
@@ -220,6 +227,7 @@ class DCASEParser(LoggingMixin, Parser):
         IOError
             If the data set cannot be parsed
         """
+        print("parsers.dcase.py DCASEParser.parse")
         if not self.can_parse():
             raise IOError("unable to parse DCASE dataset at {}".format(self._basedir))
 

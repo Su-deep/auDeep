@@ -30,6 +30,7 @@ class Validate(Command):
     """
 
     def get_parser(self, prog_name):
+        print("cli.validate.py  Validate.get_parser")
         parser = super().get_parser(prog_name)
 
         parser.add_argument("--input",
@@ -45,9 +46,11 @@ class Validate(Command):
 
     def _build_header_pattern(self,
                               num_digits: int):
+        print("cli.validate.py  Validate._build_header_pattern")
         return "%%s: %%%d violations" % num_digits
 
     def take_action(self, parsed_args):
+        print("cli.validate.py  Validate.take_action")
         if not parsed_args.input.exists():
             raise IOError("failed to open data set at {}".format(parsed_args.input))
 

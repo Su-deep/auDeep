@@ -30,6 +30,7 @@ class FuseDataSets(LoggingMixin, Command):
     """
 
     def get_parser(self, prog_name):
+        print("cli.fuse.py  FuseDataSets.get_parser")
         parser = super().get_parser(prog_name)
 
         parser.add_argument("--input",
@@ -52,6 +53,7 @@ class FuseDataSets(LoggingMixin, Command):
         return parser
 
     def take_action(self, parsed_args):
+        print("cli.fuse.py  FuseDataSets.take_action")
         for file in parsed_args.input:
             if not file.exists():
                 raise IOError("failed to open data set at {}".format(file))
@@ -70,6 +72,7 @@ class FuseChunks(LoggingMixin, Command):
     """
 
     def get_parser(self, prog_name):
+        print("cli.fuse.py  FuseChunks.get_parser")
         parser = super().get_parser(prog_name)
 
         parser.add_argument("--input",
@@ -91,6 +94,7 @@ class FuseChunks(LoggingMixin, Command):
         return parser
 
     def take_action(self, parsed_args):
+        print("cli.fuse.py  FuseChunks.take_action")
         if not parsed_args.input.exists():
             raise IOError("failed to open data set at {}".format(parsed_args.input))
 

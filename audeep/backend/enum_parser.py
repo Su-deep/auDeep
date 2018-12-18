@@ -39,6 +39,7 @@ class EnumType:
         enum_class: Type[Enum]
             The enum class for which values should be parsed
         """
+        print("training.enum_parser.py  EnumType.__init__")
         self._enum_class = enum_class
         self._member_map = {x.name.lower(): x.name for x in enum_class}
 
@@ -61,6 +62,7 @@ class EnumType:
         argparse.ArgumentTypeError
             If the enum does not have a member with the specified name
         """
+        print("training.enum_parser.py  EnumType.__call__")
         arg_lower = arg.lower()
 
         if not arg_lower in self._member_map:

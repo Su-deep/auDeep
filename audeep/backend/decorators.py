@@ -39,11 +39,13 @@ def lazy_property(fun):
     method
         The decorated method
     """
+    print("training.decorators.py  lazy_property")
     attribute = '_cache_' + fun.__name__
 
     @property
     @functools.wraps(fun)
     def decorator(self):
+        print("training.decorators.py  decorator")
         if not hasattr(self, attribute):
             setattr(self, attribute, fun(self))
         return getattr(self, attribute)
@@ -69,6 +71,7 @@ def scoped_subgraph_initializers(klass):
     class
         The decorated class
     """
+    print("training.decorators.py  scoped_subgraph_initializers")
     if not inspect.isclass(klass):
         raise AttributeError("scoped_subgraph_initializers decorator may only be used on classes")
 
@@ -77,6 +80,7 @@ def scoped_subgraph_initializers(klass):
     for name, method in original_methods.items():
         if hasattr(method, "_scoped_subgraph"):
             def init_fn(fn_self, method=method):
+                print("training.decorators.py  scoped_subgraph_initializers(init_fn)")
                 attribute = "_cache_" + method.__name__
 
                 if not hasattr(fn_self, attribute):
@@ -88,6 +92,7 @@ def scoped_subgraph_initializers(klass):
             @property
             @functools.wraps(method)
             def property_fn(fn_self, method=method):
+                print("training.decorators.py  scoped_subgraph_initializers(property_fn)")
                 attribute = "_cache_" + method.__name__
 
                 if not hasattr(fn_self, attribute):
@@ -119,9 +124,11 @@ def doublewrap(function):
     method
         The decorated method
     """
+    print("training.decorators.py  doublewrap")
 
     @functools.wraps(function)
     def decorator(*args, **kwargs):
+        print("training.decorators.py  doublewrap(decorator)")
         if len(args) == 1 and len(kwargs) == 0 and callable(args[0]):
             return function()(args[0])
         else:
@@ -154,8 +161,10 @@ def scoped_subgraph(scope: str = None, *scope_args, **scope_kwargs):
     method
         A method which can be used to decorate methods
     """
+    print("training.decorators.py  scoped_subgraph")
 
     def wrap_function(fn):
+        print("training.decorators.py  scoped_subgraph(wrap_function)")
         fn._scoped_subgraph = True
         fn.scope = scope
         fn.scope_args = scope_args

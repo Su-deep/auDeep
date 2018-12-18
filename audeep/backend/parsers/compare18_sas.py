@@ -37,12 +37,14 @@ class Compare18SASParser(LoggingMixin, Parser):
     __metaclass__ = abc.ABCMeta
 
     def __init__(self, basedir: Path):
+        print("parsers.compare18_sas.py Compare18SASParser._init_")
         super().__init__(basedir)
 
         self._metadata_cache = None
         self._audio_dir = basedir / "wav"
 
     def _metadata(self) -> pd.DataFrame:
+        print("parsers.compare18_sas.py Compare18SASParser._metadata")
         if not self.can_parse():
             raise IOError("unable to parse the ComParE 2018 Self Assessed Affect dataset at {}".format(self._basedir))
         if self._metadata_cache is None:
@@ -59,6 +61,7 @@ class Compare18SASParser(LoggingMixin, Parser):
         return self._metadata_cache
 
     def can_parse(self) -> bool:
+        print("parsers.compare18_sas.py Compare18SASParser.can_parse")
         metadata_file = self._basedir / "lab" / "ComParE2018_SelfAssessedAffect.tsv"
         metadata_file_confidential = self._basedir / "lab" / "ComParE2018_SelfAssessedAffect.confidential.tsv"
 
@@ -76,6 +79,7 @@ class Compare18SASParser(LoggingMixin, Parser):
 
     @property
     def label_map(self) -> Optional[Mapping[str, int]]:
+        print("parsers.compare18_sas.py Compare18SASParser.label_map")
         if not self.can_parse():
             raise IOError("Unable to parse ComParE 2018 Self Assessed Affect data set at {}".format(self._basedir))
 
@@ -83,6 +87,7 @@ class Compare18SASParser(LoggingMixin, Parser):
 
     @property
     def num_instances(self) -> int:
+        print("parsers.compare18_sas.py Compare18SASParser.num_instances")
         if not self.can_parse():
             raise IOError("Unable to parse ComParE 2018 Self Assessed Affect data set at {}".format(self._basedir))
 
@@ -91,12 +96,14 @@ class Compare18SASParser(LoggingMixin, Parser):
 
     @property
     def num_folds(self) -> int:
+        print("parsers.compare18_sas.py Compare18SASParser.num_folds")
         if not self.can_parse():
             raise IOError("Unable to parse ComParE 2018 Self Assessed Affect data set at {}".format(self._basedir))
 
         return 0
 
     def parse(self) -> Sequence[_InstanceMetadata]:
+        print("parsers.compare18_sas.py Compare18SASParser.parse")
         if not self.can_parse():
             raise IOError("unable to parse dataset at {}".format(self._basedir))
 

@@ -52,6 +52,7 @@ class LearnerBase:
         int
             The number of features for which the learner was trained
         """
+        print("training.learners.py  LearnerBase.num_features")
         return self._num_features
 
     @abstractmethod
@@ -70,6 +71,7 @@ class LearnerBase:
         ValueError
             If the feature matrix has invalid shape
         """
+        print("training.learners.py  LearnerBase.fit")
         if len(data_set.feature_shape) != 1:
             raise ValueError("invalid number of feature dimensions: {}".format(len(data_set.feature_shape)))
 
@@ -96,6 +98,7 @@ class LearnerBase:
         ValueError
             If the specified feature matrix has invalid shape
         """
+        print("training.learners.py  LearnerBase.predict")
         if len(data_set.feature_shape) != 1:
             raise ValueError("invalid number of feature dimensions: {}".format(len(data_set.feature_shape)))
         if data_set.feature_shape[0] != self.num_features:
@@ -117,10 +120,12 @@ class LibLINEARLearner(LearnerBase):
         complexity: float
             The SVM complexity parameter
         """
+        print("training.learners.py  LibLINEARLearner.__init__")
         self._model = LinearSVC(C=complexity)
 
     def fit(self,
             data_set: DataSet):
+        print("training.learners.py  LibLINEARLearner.fit")
         # generic parameter checks
         super().fit(data_set)
 
@@ -128,6 +133,7 @@ class LibLINEARLearner(LearnerBase):
 
     def predict(self,
                 data_set: DataSet):
+        print("training.learners.py  LibLINEARLearner.predict")
         # generic parameter checks
         super().predict(data_set)
 
@@ -173,6 +179,7 @@ class TensorflowMLPLearner(LearnerBase):
         shuffle_training: bool, default False
             Shuffle training data between epochs
         """
+        print("training.learners.py  TensorflowMLPLearner.__init__")
         self._checkpoint_dir = checkpoint_dir
         self._latest_checkpoint = None
         self._num_labels = None
@@ -184,6 +191,7 @@ class TensorflowMLPLearner(LearnerBase):
 
     def fit(self,
             data_set: DataSet):
+        print("training.learners.py  TensorflowMLPLearner.fit")
         # generic parameter checks
         super().fit(data_set)
 
@@ -221,6 +229,7 @@ class TensorflowMLPLearner(LearnerBase):
 
     def predict(self,
                 data_set: DataSet):
+        print("training.learners.py  TensorflowMLPLearner.predict")
         # generic parameter checks
         super().predict(data_set)
 
@@ -267,6 +276,7 @@ def _majority_vote(chunked_data_set: DataSet,
     map of str to int
         The predictions for the audio files computed using majority voting over the predictions on the individual chunks
     """
+    print("training.learners.py  TensorflowMLPLearner._majority_vote")
     predictions = {}
 
     for index in chunked_data_set:
@@ -308,6 +318,7 @@ class PreProcessingWrapper(LearnerBase):
             Whether to use majority voting to obtain predictions on chunked instances. This parameter can be set even if
             the data on which predictions are computed does not contain chunked instances.
         """
+        print("training.learners.py  PreProcessingWrapper.__init__")
         self._learner = learner
         self._upsample = upsample
         self._majority_vote = majority_vote
@@ -315,6 +326,7 @@ class PreProcessingWrapper(LearnerBase):
 
     def fit(self,
             data_set: DataSet):
+        print("training.learners.py  PreProcessingWrapper.fit")
         # generic parameter checks
         super().fit(data_set)
 
@@ -335,6 +347,7 @@ class PreProcessingWrapper(LearnerBase):
 
     def predict(self,
                 data_set: DataSet) -> Mapping[str, int]:
+        print("training.learners.py  PreProcessingWrapper.predict")
         super().predict(data_set)
 
         if self._scaler is None:

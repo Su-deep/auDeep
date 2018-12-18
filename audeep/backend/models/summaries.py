@@ -31,6 +31,7 @@ def variable_summaries(tensor: tf.Tensor):
     tensor: tf.Tensor
         The tensor for which summary operations should be created
     """
+    print("model.summaries.py variable_summaries")
     mean = tf.reduce_mean(tensor)
     tf.summary.scalar("mean", mean)
     with tf.name_scope("stddev"):
@@ -52,6 +53,7 @@ def scalar_summaries(tensor: tf.Tensor,
     name: str, optional
         A name for the summary operation (default "value")
     """
+    print("model.summaries.py scalar_summaries")
     tf.summary.scalar(name, tensor)
 
 
@@ -74,6 +76,7 @@ def reconstruction_summaries(reconstruction: tf.Tensor,
     name: str, optional
         A name for the summary operation (default "targets_vs_reconstruction")
     """
+    print("model.summaries.py reconstruction_summaries")
     # concat targets and reconstruction along feature dimension
     images = tf.concat([targets, reconstruction], axis=2)
     images = tf.transpose(images, perm=[1, 0, 2])
@@ -96,4 +99,5 @@ def image_summaries(images: tf.Tensor,
     name: str, optional
         A name for the summary operation (default "image")
     """
+    print("model.summaries.py image_summaries")
     tf.summary.image(name, images, max_outputs)

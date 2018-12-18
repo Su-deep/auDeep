@@ -43,6 +43,7 @@ class TableFormatter:
         alignment: str, optional
             Alignment string specifying the alignment of columns
         """
+        print("training.formatters.py  TableFormatter._init_")
         if alignment is not None and not re.compile("[lr]*").match(alignment):
             raise ValueError("alignment string must only contain 'l' and 'r' characters")
 
@@ -60,6 +61,7 @@ class TableFormatter:
         -------
 
         """
+        print("training.formatters.py  TableFormatter.get_column_widths")
         # little bit of functional programming fun:
         #
         # - [map(len, row) for row in data] is a list containing a list of columns widths for each row
@@ -83,6 +85,7 @@ class TableFormatter:
         column_widths: list of int
             The widths of columns
         """
+        print("training.formatters.py  TableFormatter._print_divider")
         print("+", end="")
         for i in range(len(column_widths)):
             print("%s+" % ("-" * (column_widths[i] + 2)), end="")
@@ -109,6 +112,7 @@ class TableFormatter:
         dividers: list of int, optional
             Additional horizontal dividers
         """
+        print("training.formatters.py  TableFormatter.print")
         data = [list(map(lambda x: str(x).strip(), row)) for row in data]
 
         num_columns = max(len(row) for row in data)
@@ -175,6 +179,7 @@ class ConfusionMatrixFormatter:
         abbrev_labels: int, default 3
             Abbreviate nominal labels to have the specified length
         """
+        print("training.formatters.py  ConfusionMatrixFormatter._init_")
         self._normalize = normalize
         self._abbrev_labels = abbrev_labels
 
@@ -205,6 +210,7 @@ class ConfusionMatrixFormatter:
         str
             A string representation of the confusion matrix
         """
+        print("training.formatters.py  ConfusionMatrixFormatter.format")
         if len(confusion_matrix.shape) != 2:
             raise ValueError("confusion matrix must be 2D, is: {}".format(len(confusion_matrix.shape)))
         elif confusion_matrix.shape[0] != confusion_matrix.shape[1]:

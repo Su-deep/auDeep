@@ -70,6 +70,7 @@ class FrequencyAutoencoder:
             Scalar tensor containing the probability at each time step to feed the previous output of the decoder as 
             input 
         """
+        print("model.frequency_autoencoder.py FrequencyAutoencoder.__init__")
 
         # inputs
         self.inputs = inputs
@@ -108,6 +109,7 @@ class FrequencyAutoencoder:
         tf.Tensor
             The number of time steps in the input sequences
         """
+        print("model.frequency_autoencoder.py FrequencyAutoencoder.max_time")
         return tf.shape(self.inputs)[0]
 
     @property
@@ -122,6 +124,7 @@ class FrequencyAutoencoder:
         tf.Tensor
             The number of input sequences per batch
         """
+        print("model.frequency_autoencoder.py FrequencyAutoencoder.batch_size")
         return tf.shape(self.inputs)[1]
 
     @property
@@ -136,6 +139,7 @@ class FrequencyAutoencoder:
         int
             The number of features in each time step of the input sequence
         """
+        print("model.frequency_autoencoder.py FrequencyAutoencoder.num_features")
         return self.inputs.shape.as_list()[2]
 
     @scoped_subgraph
@@ -150,6 +154,7 @@ class FrequencyAutoencoder:
         tf.Tensor
             The target sequences, of shape [max_time, batch_size, num_features]
         """
+        print("model.frequency_autoencoder.py FrequencyAutoencoder.targets")
         return self.inputs[:, :, ::-1]
 
     @scoped_subgraph
@@ -166,6 +171,8 @@ class FrequencyAutoencoder:
         tf.Tensor
             The input sequences for the encoder
         """
+        print("model.frequency_autoencoder.py FrequencyAutoencoder.encoder_inputs")
+
         # shape: [max_time * batch_size, num_features]
         inputs_flat = flatten_time(self.inputs)
 
@@ -186,6 +193,8 @@ class FrequencyAutoencoder:
         StandardRNN
             The encoder RNN
         """
+        print("model.frequency_autoencoder.py FrequencyAutoencoder.encoder")
+
         return StandardRNN(architecture=self.encoder_architecture,
                            inputs=self.encoder_inputs,
                            initial_state=None,
@@ -206,6 +215,8 @@ class FrequencyAutoencoder:
         tf.Tensor
             The hidden representation of the input sequences, of shape [batch_size, decoder_state_size]
         """
+        print("model.frequency_autoencoder.py FrequencyAutoencoder.representation")
+
 
         # shape: [max_time * batch_size, encoder.state_size]
         internal_rep = tf.tanh(linear(self.encoder.final_state, self.decoder_architecture.state_size))
@@ -234,6 +245,8 @@ class FrequencyAutoencoder:
         tf.Tensor
             The decoder RNN input sequences, of shape [num_windows, batch_size*max_time, window_width]
         """
+        print("model.frequency_autoencoder.py FrequencyAutoencoder.decoder_inputs")
+
         num_windows = self.encoder_inputs.shape.as_list()[0]
         decoder_inputs = self.encoder_inputs[::-1]
         decoder_inputs = decoder_inputs[:num_windows - 1]
@@ -254,6 +267,8 @@ class FrequencyAutoencoder:
         FeedPreviousRNN
             The decoder RNN
         """
+        print("model.frequency_autoencoder.py FrequencyAutoencoder.decoder")
+
         return FeedPreviousRNN(architecture=self.decoder_architecture,
                                inputs=self.decoder_inputs,
                                initial_state=self.representation,
@@ -275,6 +290,8 @@ class FrequencyAutoencoder:
         tf.Tensor
             The reconstruction of the input sequence, of shape [max_time, batch_size, num_features]
         """
+        print("model.frequency_autoencoder.py FrequencyAutoencoder.reconstruction")
+
 
         # shape: [num_windows, max_time * batch_size, decoder_frequency.output_size]
         decoder_output = self.decoder.output
@@ -314,6 +331,8 @@ class FrequencyAutoencoder:
         tf.Tensor
             Scalar tensor containing the reconstruction loss averaged over the entire input batch
         """
+        print("model.frequency_autoencoder.py FrequencyAutoencoder.loss")
+
         reconstruction = self.reconstruction
 
         if self.mask_silence:
@@ -338,6 +357,8 @@ class FrequencyAutoencoder:
         tf.Operation
             The optimization operation used for training the autoencoder
         """
+        print("model.frequency_autoencoder.py FrequencyAutoencoder.optimizer")
+
         optimizer = tf.train.AdamOptimizer(learning_rate=self.learning_rate)
         gvs = optimizer.compute_gradients(self.loss)
 

@@ -29,6 +29,7 @@ class Import(Command):
     """
 
     def get_parser(self, prog_name):
+        print("cli.import_data.py  Import.get_parser")
         parser = super().get_parser(prog_name)
 
         parser.add_argument("--basedir",
@@ -59,6 +60,7 @@ class Import(Command):
         return parser
 
     def take_action(self, parsed_args):
+        print("cli.import_data.py  Import.take_action")
         importer = DataImporter(filename_attribute=parsed_args.filename_attribute,
                                 chunk_nr_attribute=parsed_args.chunk_nr_attribute,
                                 label_nominal_attribute=parsed_args.label_nominal_attribute,

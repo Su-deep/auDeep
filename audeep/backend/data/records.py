@@ -38,6 +38,7 @@ def _bytes_feature(value: bytes) -> tf.train.Feature:
     tf.train.Feature
         A Feature protobuf containing the specified bytes
     """
+    print("data.records.py _bytes_feature")
     return tf.train.Feature(bytes_list=tf.train.BytesList(value=[value]))
 
 
@@ -55,6 +56,7 @@ def to_example(data: np.ndarray) -> tf.train.Example:
     tf.train.Example
         An Example protobuf containing the specified feature matrix
     """
+    print("data.records.py to_example")
     return tf.train.Example(features=tf.train.Features(feature={
         _DATA_RAW_KEY: _bytes_feature(data.astype(np.float32).flatten().tobytes()),
     }))
@@ -77,6 +79,7 @@ def to_tensor(serialized_example: tf.Tensor,
     tf.Tensor
         The deserialized feature matrix
     """
+    print("data.records.py to_tensor")
     features = tf.parse_single_example(
         serialized_example,
         features={

@@ -66,6 +66,7 @@ class TrainBaseCommand(LoggingMixin, Command):
         default_run_name: Path
             Default run name
         """
+        print("cli.train.py  TrainBaseCommand.__init__")
         super().__init__(app, app_args)
 
         self.default_batch_size = default_batch_size
@@ -79,6 +80,7 @@ class TrainBaseCommand(LoggingMixin, Command):
         self.num_instances = None
 
     def get_parser(self, prog_name):
+        print("cli.train.py  TrainBaseCommand.get_parser")
         parser = super().get_parser(prog_name)
 
         parser.add_argument("--batch-size",
@@ -125,6 +127,7 @@ class TrainBaseCommand(LoggingMixin, Command):
     def _setup_io(self,
                   parsed_args,
                   tempdir: Path):
+        print("cli.train.py  TrainBaseCommand._setup_io")
         data_files = parsed_args.input
 
         for file in data_files:
@@ -164,6 +167,7 @@ class TrainBaseCommand(LoggingMixin, Command):
             self.model_filename.parent.mkdir()
 
     def run(self, parsed_args):
+        print("cli.train.py  TrainBaseCommand.run")
         if parsed_args.tempdir is None:
             tempdir = Path(tempfile.mkdtemp())
         else:
@@ -195,6 +199,7 @@ class TrainBaseCommand(LoggingMixin, Command):
 
     @abc.abstractmethod
     def take_action(self, parsed_args):
+        print("cli.train.py  TrainBaseCommand.take_action")
         pass
 
 
@@ -207,6 +212,7 @@ class TrainAutoencoderBaseCommand(TrainBaseCommand):
     __metaclass__ = abc.ABCMeta
 
     def get_parser(self, prog_name):
+        print("cli.train.py  TrainAutoencoderBaseCommand.get_parser")
         parser = super().get_parser(prog_name)
 
         parser.add_argument("--num-layers",
@@ -236,6 +242,7 @@ class TrainAutoencoderBaseCommand(TrainBaseCommand):
 
     @abc.abstractmethod
     def take_action(self, parsed_args):
+        print("cli.train.py  TrainAutoencoderBaseCommand.take_action")
         pass
 
 
@@ -245,9 +252,11 @@ class TrainTimeAutoencoder(TrainAutoencoderBaseCommand):
     """
 
     def __init__(self, app, app_args):
+        print("cli.train.py  TrainTimeAutoencoder.__init__")
         super().__init__(app, app_args)
 
     def get_parser(self, prog_name):
+        print("cli.train.py  TrainTimeAutoencoder.get_parser")
         parser = super().get_parser(prog_name)
 
         parser.add_argument("--encoder-noise",
@@ -267,6 +276,7 @@ class TrainTimeAutoencoder(TrainAutoencoderBaseCommand):
         return parser
 
     def take_action(self, parsed_args):
+        print("cli.train.py  TrainTimeAutoencoder.take_action")
         encoder_architecture = RNNArchitecture(num_layers=parsed_args.num_layers,
                                                num_units=parsed_args.num_units,
                                                bidirectional=parsed_args.bidirectional_encoder,
@@ -304,9 +314,11 @@ class TrainFrequencyAutoencoder(TrainAutoencoderBaseCommand):
     """
 
     def __init__(self, app, app_args):
+        print("cli.train.py  TrainFrequencyAutoencoder.__init__")
         super().__init__(app, app_args)
 
     def get_parser(self, prog_name):
+        print("cli.train.py  TrainFrequencyAutoencoder.get_parser")
         parser = super().get_parser(prog_name)
 
         parser.add_argument("--freq-window-width",
@@ -330,6 +342,7 @@ class TrainFrequencyAutoencoder(TrainAutoencoderBaseCommand):
         return parser
 
     def take_action(self, parsed_args):
+        print("cli.train.py  TrainFrequencyAutoencoder.take_action")
         encoder_architecture = RNNArchitecture(num_layers=parsed_args.num_layers,
                                                num_units=parsed_args.num_units,
                                                bidirectional=parsed_args.bidirectional_encoder,
@@ -368,9 +381,11 @@ class TrainFrequencyTimeAutoencoder(TrainBaseCommand):
     """
 
     def __init__(self, app, app_args):
+        print("cli.train.py  TrainFrequencyTimeAutoencoder.__init__")
         super().__init__(app, app_args)
 
     def get_parser(self, prog_name):
+        print("cli.train.py  TrainFrequencyTimeAutoencoder.get_parser")
         parser = super().get_parser(prog_name)
 
         parser.add_argument("--num-f-layers",
@@ -441,6 +456,7 @@ class TrainFrequencyTimeAutoencoder(TrainBaseCommand):
         return parser
 
     def take_action(self, parsed_args):
+        print("cli.train.py  TrainFrequencyTimeAutoencoder.take_action")
         f_encoder_architecture = RNNArchitecture(num_layers=parsed_args.num_f_layers,
                                                  num_units=parsed_args.num_f_units,
                                                  bidirectional=parsed_args.bidirectional_f_encoder,

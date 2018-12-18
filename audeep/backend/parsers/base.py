@@ -55,6 +55,7 @@ class _InstanceMetadata:
         partition: Partition, optional
             The partition of the audio file
         """
+        print("parsers.base.py InstanceMetaData._init_")
         self._path = path
         self._filename = filename
         self._label_nominal = label_nominal
@@ -72,6 +73,7 @@ class _InstanceMetadata:
         pathlib.Path
             The absolute path of the audio file for which this object stores metadata
         """
+        print("parsers.base.py InstanceMetaData.path")
         return self._path
 
     @property
@@ -84,6 +86,7 @@ class _InstanceMetadata:
         str
             The filename of the audio file
         """
+        print("parsers.base.py InstanceMetaData.filename")
         return self._filename
 
     @property
@@ -96,6 +99,7 @@ class _InstanceMetadata:
         str
             The nominal label of the audio file
         """
+        print("parsers.base.py InstanceMetaData.label_nominal")
         return self._label_nominal
 
     @property
@@ -108,6 +112,7 @@ class _InstanceMetadata:
         int
             The numeric label of the audio file
         """
+        print("parsers.base.py InstanceMetaData.label_numeric")
         return self._label_numeric
 
     @property
@@ -123,6 +128,7 @@ class _InstanceMetadata:
         list of Split
             A list of cross-validation splits, with one entry for each cross-validation fold
         """
+        print("parsers.base.py InstanceMetaData.cv_folds")
         return self._cv_folds
 
     @property
@@ -135,6 +141,7 @@ class _InstanceMetadata:
         Partition
             The partition of the audio file
         """
+        print("parsers.base.py InstanceMetaData.partition")
         return self._partition
 
 
@@ -159,6 +166,7 @@ class Parser:
         basedir: pathlib.Path
             The data set base directory
         """
+        print("parsers.base.py Parser._init_")
         if not basedir.exists():
             raise IOError("could not open dataset base directory at {}".format(basedir))
 
@@ -174,6 +182,7 @@ class Parser:
         bool
             True, if this parser can parse the data set, False otherwise
         """
+        print("parsers.base.py Parser.can_parse")
         pass
 
     @property
@@ -188,6 +197,7 @@ class Parser:
             A mapping of nominal labels to numeric label values if the data set contains label information, None 
             otherwise
         """
+        print("parsers.base.py Parser.label_map")
         pass
 
     @property
@@ -201,6 +211,7 @@ class Parser:
         int
             The number of instances, i.e. audio files, in the data set
         """
+        print("parsers.base.py Parser.num_instances")
         pass
 
     @property
@@ -214,6 +225,7 @@ class Parser:
         int
             The number of cross validation folds in the data set
         """
+        print("parsers.base.py Parser.num_folds")
         pass
 
     @abc.abstractmethod
@@ -229,4 +241,5 @@ class Parser:
         list of _InstanceMetadata
             Metadata for each instance
         """
+        print("parsers.base.py Parser.parse")
         pass

@@ -31,6 +31,7 @@ class Upsample(Command):
     """
 
     def get_parser(self, prog_name):
+        print("cli.upsample.py  Upsample.get_parser")
         parser = super().get_parser(prog_name)
 
         parser.add_argument("--input",
@@ -53,6 +54,7 @@ class Upsample(Command):
         return parser
 
     def take_action(self, parsed_args):
+        print("cli.upsample.py  Upsample.take_action")
         if not parsed_args.input.exists():
             raise IOError("failed to open data set at {}".format(parsed_args.input))
 

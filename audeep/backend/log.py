@@ -37,6 +37,7 @@ class LoggingMixin:
         kwargs
             Keyword arguments
         """
+        print("training.log.py  LoggingMixin._init_")
         # noinspection PyArgumentList
         super().__init__(*args, **kwargs)
 

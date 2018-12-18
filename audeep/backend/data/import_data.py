@@ -44,6 +44,7 @@ def _is_known_suffix(suffix: str) -> bool:
     bool
         True, if we can parse the file type indicated by the specified file extension
     """
+    print("data.import_data.py _is_known_suffix")
     return suffix.lower() == ".csv" or suffix.lower() == ".arff"
 
 
@@ -76,6 +77,7 @@ def _build_label_map(nominal_labels: Iterable[str],
         If the label assignments passed to this function are inconsistent, i.e. if there are multiple numeric labels
         for one nominal label or vice-versa
     """
+    print("data.import_data.py _build_label_map")
     label_map = {}
     label_map_inverse = {}
 
@@ -120,6 +122,7 @@ class DataImporter(LoggingMixin):
         label_numeric_attribute: str
             The name of the numeric label attribute/column
         """
+        print("data.import_data.py DataImporter.init")
         super().__init__()
 
         self._filename_attribute = filename_attribute
@@ -163,6 +166,7 @@ class DataImporter(LoggingMixin):
         IOError
             If an error occurs while importing the data set
         """
+        print("data.import_data.py DataImporter._import_arff")
         with open(str(file)) as fp:
             data_arff = arff.load(fp)
 
@@ -273,6 +277,7 @@ class DataImporter(LoggingMixin):
         IOError
             If an error occurs while importing the data set
         """
+        print("data.import_data.py DataImporter._import_csv")
         data_frame = pd.read_csv(file)  # type: pd.DataFrame
 
         if self._label_nominal_attribute not in data_frame:
@@ -369,6 +374,7 @@ class DataImporter(LoggingMixin):
         IOError
             If the file extension is unknown
         """
+        print("data.import_data.py DataImporter._import")
         if file.suffix.lower() == ".csv":
             return self._import_csv(file=file,
                                     num_folds=num_folds,
@@ -409,6 +415,7 @@ class DataImporter(LoggingMixin):
         IOError
             If an error occurs while importing the data sets
         """
+        print("data.import_data.py DataImporter._import_partitioned")
         self.log.debug("trying to import partitioned data set")
 
         partition_dir_map = dict([(Partition[dir.name.upper()], dir) for dir in partition_dirs])
@@ -474,6 +481,7 @@ class DataImporter(LoggingMixin):
         IOError
             If an error occurs while importing the data sets
         """
+        print("data.import_data.py DataImporter._import_cross_validated")
         self.log.debug("trying to import cross-validated data set")
 
         num_folds = len(fold_dirs)
@@ -549,6 +557,7 @@ class DataImporter(LoggingMixin):
         IOError
             If an error occurs while importing the data set, either due to OS errors or due to incorrect file structure
         """
+        print("data.import_data.py DataImporter.import_data")
         # check if we are importing a single file
         single_files = list(basedir.glob(name + ".*"))
 

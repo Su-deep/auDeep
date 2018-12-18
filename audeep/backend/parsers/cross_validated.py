@@ -44,6 +44,7 @@ class CrossValidatedParser(LoggingMixin, Parser):
         basedir: pathlib.Path
             The data set base directory
         """
+        print("parsers.cross_validated.py CrossValidatedParser._init_")
         super().__init__(basedir)
 
         self._dirs = list(self._basedir.glob("fold_*"))
@@ -59,6 +60,7 @@ class CrossValidatedParser(LoggingMixin, Parser):
         bool
             True, if this parser can parse the directory structure in the data set base directory
         """
+        print("parsers.cross_validated.py CrossValidatedParser.can_parse")
         if len(self._dirs) < 2:
             self.log.debug("cannot parse: need at least two fold directories")
 
@@ -110,6 +112,7 @@ class CrossValidatedParser(LoggingMixin, Parser):
         IOError
             If the data set cannot be parsed
         """
+        print("parsers.cross_validated.py CrossValidatedParser.num_folds")
         if not self.can_parse():
             raise IOError("unable to parse dataset at {}".format(self._basedir))
 
@@ -132,6 +135,7 @@ class CrossValidatedParser(LoggingMixin, Parser):
         IOError
             If the data set cannot be parsed
         """
+        print("parsers.cross_validated.py CrossValidatedParser.label_map")
         if not self.can_parse():
             raise IOError("unable to parse dataset at {}".format(self._basedir))
 
@@ -169,6 +173,7 @@ class CrossValidatedParser(LoggingMixin, Parser):
         IOError
             If the data set cannot be parsed
         """
+        print("parsers.cross_validated.py CrossValidatedParser.num_instances")
         if not self.can_parse():
             raise IOError("unable to parse dataset at {}".format(self._basedir))
 
@@ -199,6 +204,7 @@ class CrossValidatedParser(LoggingMixin, Parser):
         IOError
             If the data set cannot be parsed
         """
+        print("parsers.cross_validated.py CrossValidatedParser.parse")
         if not self.can_parse():
             raise IOError("unable to parse dataset at {}".format(self._basedir))
 

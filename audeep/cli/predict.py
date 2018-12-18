@@ -36,11 +36,13 @@ class PredictBaseCommand(LoggingMixin, Command):
     """
 
     def __init__(self, app, app_args):
+        print("cli.predict.py  PredictBaseCommand.__init__")
         super().__init__(app, app_args)
 
         self._learner = None
 
     def get_parser(self, prog_name):
+        print("cli.predict.py  PredictBaseCommand.get_parser")
         parser = super().get_parser(prog_name)
 
         parser.add_argument("--train-input",
@@ -76,9 +78,11 @@ class PredictBaseCommand(LoggingMixin, Command):
 
     @abc.abstractmethod
     def _get_learner(self, parsed_args) -> LearnerBase:
+        print("cli.predict.py  PredictBaseCommand._get_learner")
         pass
 
     def take_action(self, parsed_args):
+        print("cli.predict.py  PredictBaseCommand.take_action")
         self._learner = PreProcessingWrapper(learner=self._get_learner(parsed_args),
                                              upsample=parsed_args.upsample,
                                              majority_vote=parsed_args.majority_vote)
@@ -121,6 +125,7 @@ class MLPPrediction(PredictBaseCommand):
     """
 
     def get_parser(self, prog_name):
+        print("cli.predict.py  MLPPrediction.get_parser")
         parser = super().get_parser(prog_name)
 
         parser.add_argument("--learning-rate",
@@ -150,6 +155,7 @@ class MLPPrediction(PredictBaseCommand):
         return parser
 
     def _get_learner(self, parsed_args) -> LearnerBase:
+        print("cli.predict.py  MLPPrediction._get_learner")
         checkpoint_dir = parsed_args.train_input.parent / "evaluation"  # type: Path
 
         if not checkpoint_dir.exists():
@@ -170,6 +176,7 @@ class SVMPrediction(PredictBaseCommand):
     """
 
     def get_parser(self, prog_name):
+        print("cli.predict.py  SVMPrediction.get_parser")
         parser = super().get_parser(prog_name)
 
         parser.add_argument("--complexity",
@@ -180,4 +187,5 @@ class SVMPrediction(PredictBaseCommand):
         return parser
 
     def _get_learner(self, parsed_args) -> LearnerBase:
+        print("cli.predict.py  SVMPrediction._get_learner")
         return LibLINEARLearner(complexity=parsed_args.complexity)

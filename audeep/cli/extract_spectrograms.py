@@ -39,6 +39,7 @@ class ExtractSpectrograms(LoggingMixin, Command):
     """
 
     def get_parser(self, prog_name):
+        print("cli.extract_spectrograms.py  ExtractSpectrograms.get_parser")
         parser = super().get_parser(prog_name)
 
         parser.add_argument("--basedir",
@@ -113,6 +114,7 @@ class ExtractSpectrograms(LoggingMixin, Command):
         return parser
 
     def get_preprocessor(self, parsed_args):
+        print("cli.extract_spectrograms.py  ExtractSpectrograms.get_preprocessor")
         return Preprocessor(channel_fusion=parsed_args.channels,
                             pre_emphasis=True,
                             window_width=parsed_args.window_width,
@@ -127,6 +129,7 @@ class ExtractSpectrograms(LoggingMixin, Command):
                             mean_norm=parsed_args.pretend is None)
 
     def take_action(self, parsed_args):
+        print("cli.extract_spectrograms.py  ExtractSpectrograms.take_action")
         if (parsed_args.chunk_count is not None) ^ (parsed_args.chunk_length is not None):
             raise ValueError("--chunk-count can only be used with --chunk-length and vice-versa")
 

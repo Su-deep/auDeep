@@ -54,6 +54,7 @@ def export_tfrecords(path: Path,
     data_set: DataSet
         The data set which should be exported
     """
+    print("data.export.py export_tfrecords")
     log = logging.getLogger(__name__)
 
     if not path.parent.exists():
@@ -93,6 +94,7 @@ def _write_csv(outfile: Path,
         If set, write the labels as the last two columns. Otherwise, write them as the third and fourth column after the
         filename and chunk number
     """
+    print("data.export.py _write_csv")
     # convert to pandas DataFrame
     features_flattened = data_set.features.reshape(data_set.num_instances, -1)
     feature_names = ["feature_%d" % index for index in range(features_flattened.shape[-1])]
@@ -143,6 +145,7 @@ def _write_arff(outfile: Path,
         If set, write the labels as the last two attributes. Otherwise, write them as the third and fourth attributes 
         after the filename and chunk number
     """
+    print("data.export.py _write_arff")
     if data_set.label_map is not None:
         nominal_labels = sorted(data_set.label_map.keys())
     else:
@@ -228,6 +231,7 @@ def _write(outfile: Path,
     ValueError
         If the output format is unknown
     """
+    print("data.export.py _write")
     if fmt is ExportFormat.CSV:
         _write_csv(outfile, data_set, labels_last)
     elif fmt is ExportFormat.ARFF:
@@ -279,6 +283,7 @@ def export(basedir: Path,
     fmt: ExportFormat
         The output format
     """
+    print("data.export.py export")
     log = logging.getLogger(__name__)
 
     if not basedir.exists():
@@ -376,6 +381,7 @@ def export_csv(basedir: Path,
         If set, write the labels as the last two columns/attributes. Otherwise, write them as the third and fourth 
         columns/attributes after the filename and chunk number
     """
+    print("data.export.py export_csv")
     export(basedir=basedir,
            name=name,
            data_set=data_set,
@@ -404,6 +410,7 @@ def export_arff(basedir: Path,
         If set, write the labels as the last two columns/attributes. Otherwise, write them as the third and fourth 
         columns/attributes after the filename and chunk number
     """
+    print("data.export.py export_arff")
     export(basedir=basedir,
            name=name,
            data_set=data_set,

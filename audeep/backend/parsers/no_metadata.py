@@ -40,6 +40,7 @@ class NoMetadataParser(LoggingMixin, Parser):
         basedir: pathlib.Path
             The data set base directory
         """
+        print("parsers.no_metadata.py  NoMetadataParser._init_")
         super().__init__(basedir)
 
         self._num_instances_cache = None
@@ -53,6 +54,7 @@ class NoMetadataParser(LoggingMixin, Parser):
         bool
             True
         """
+        print("parsers.no_metadata.py  NoMetadataParser.can_parse")
         return True
 
     @property
@@ -67,6 +69,7 @@ class NoMetadataParser(LoggingMixin, Parser):
         int
             The number instances in the data set
         """
+        print("parsers.no_metadata.py  NoMetadataParser.num_instances")
         if self._num_instances_cache is None:
             self._num_instances_cache = len(list(self._basedir.rglob("*.wav")))
 
@@ -83,6 +86,7 @@ class NoMetadataParser(LoggingMixin, Parser):
         int
             Zero
         """
+        print("parsers.no_metadata.py  NoMetadataParser.num_folds")
         return 0
 
     @property
@@ -95,6 +99,7 @@ class NoMetadataParser(LoggingMixin, Parser):
         map of str to int
             None
         """
+        print("parsers.no_metadata.py  NoMetadataParser.label_map")
         return None
 
     def parse(self) -> Sequence[_InstanceMetadata]:
@@ -106,6 +111,7 @@ class NoMetadataParser(LoggingMixin, Parser):
         list of _InstanceMetadata
             A list of _InstanceMetadata containing one entry for each parsed audio file
         """
+        print("parsers.no_metadata.py  NoMetadataParser.parse")
         meta_list = []
 
         for file in self._basedir.rglob("*.wav"):  # type: Path

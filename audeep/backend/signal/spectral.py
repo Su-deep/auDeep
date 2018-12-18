@@ -37,6 +37,7 @@ def pre_emphasis_filter(signal: np.ndarray,
     numpy.ndarray
         The filtered signal
     """
+    print("signal.spectral.py  pre_emphasis_filter")
     # noinspection PyTypeChecker
     return np.append(signal[0], signal[1:] - signal[:-1] * alpha)
 
@@ -70,6 +71,7 @@ def power_spectrum(signal: np.ndarray,
     sxx: numpy.ndarray
         Power spectrogram of the input signal with axes [frequency, time]
     """
+    print("signal.spectral.py  power_spectrum")
     f, t, sxx = spectrogram(x=signal,
                             fs=fs,
                             window=hann(window_width, sym=False),
@@ -108,6 +110,7 @@ def mel_filter_bank(fs: int,
         Array of Mel filter bank coefficients. The first axis corresponds to different filters, and the second axis
         corresponds to the original frequency bands
     """
+    print("signal.spectral.py  mel_filter_bank")
     n_fft = window_width
     low_freq_mel = 0
     high_freq_mel = (2595 * np.log10(1 + (fs / 2) / 700))  # Convert Hz to Mel
@@ -162,6 +165,7 @@ def mel_spectrum(power_spectrum: np.ndarray,
     numpy.ndarray
         Mel spectrogram computed from the specified power spectrogram
     """
+    print("signal.spectral.py  mel_spectrum")
     if mel_fbank is None:
         _, mel_fbank = mel_filter_bank(fs, window_width, n_filt)
 
@@ -192,6 +196,7 @@ def power_to_db(spectrum: np.ndarray,
     numpy.ndarray
         The spectrogram on the Decibel scale
     """
+    print("signal.spectral.py  power_to_db")
     # there might be zeros, fix them to the lowest non-zero power in the spectrogram
     epsilon = np.min(spectrum[np.where(spectrum > 0)])
 

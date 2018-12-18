@@ -50,6 +50,7 @@ class UrbanSound8KParser(LoggingMixin, Parser):
         basedir: pathlib.Path
             The data set base directory
         """
+        print("parsers.urban_sounds_8k.py  UrbanSound8KParser._init_")
         super().__init__(basedir)
 
         self._metadata_cache = None
@@ -71,6 +72,7 @@ class UrbanSound8KParser(LoggingMixin, Parser):
         IOError
             If the data set cannot be parsed
         """
+        print("parsers.urban_sounds_8k.py  UrbanSound8KParser._metadata")
         if not self.can_parse():
             raise IOError("unable to parse UrbanSound8K dataset at {}".format(self._basedir))
         if self._metadata_cache is None:
@@ -91,6 +93,7 @@ class UrbanSound8KParser(LoggingMixin, Parser):
         bool
             True, if the data set base directory contains the UrbanSound8K data set, False otherwise
         """
+        print("parsers.urban_sounds_8k.py  UrbanSound8KParser.can_parse")
         audio_dir = self._basedir / "audio"
         metadata_file = self._basedir / "metadata" / "UrbanSound8K.csv"
 
@@ -121,6 +124,7 @@ class UrbanSound8KParser(LoggingMixin, Parser):
         IOError
             If the data set cannot be parsed
         """
+        print("parsers.urban_sounds_8k.py  UrbanSound8KParser.num_instances")
         if not self.can_parse():
             raise IOError("Unable to parse UrbanSound8K data set at {}".format(self._basedir))
 
@@ -141,6 +145,7 @@ class UrbanSound8KParser(LoggingMixin, Parser):
         IOError
             If the data set cannot be parsed
         """
+        print("parsers.urban_sounds_8k.py  UrbanSound8KParser.num_folds")
         if not self.can_parse():
             raise IOError("Unable to parse UrbanSound8K data set at {}".format(self._basedir))
 
@@ -163,6 +168,7 @@ class UrbanSound8KParser(LoggingMixin, Parser):
         IOError
             If the data set cannot be parsed
         """
+        print("parsers.urban_sounds_8k.py  UrbanSound8KParser.label_map")
         if not self.can_parse():
             raise IOError("Unable to parse UrbanSound8K data set at {}".format(self._basedir))
 
@@ -198,6 +204,7 @@ class UrbanSound8KParser(LoggingMixin, Parser):
         IOError
             If the data set cannot be parsed
         """
+        print("parsers.urban_sounds_8k.py  UrbanSound8KParser.parse")
         if not self.can_parse():
             raise IOError("Unable to parse UrbanSound8K data set at {}".format(self._basedir))
 

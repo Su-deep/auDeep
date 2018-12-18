@@ -48,6 +48,7 @@ def create_cv_setup(data_set: DataSet,
     DataSet
         A copy of the specified data set, with a cross-validation setup
     """
+    print("data.eval-tools.py create_cv_setup")
     log = logging.getLogger(__name__)
 
     data_set = data_set.with_cv_folds(num_folds).shuffled()
@@ -127,6 +128,7 @@ def create_partitioning(data_set: DataSet,
     DataSet
         A copy of the specified data set, with a partitioning setup
     """
+    print("data.eval-tools.py create_partitioning")
     log = logging.getLogger(__name__)
 
     data_set = data_set.copy().shuffled()

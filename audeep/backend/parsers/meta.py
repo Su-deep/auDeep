@@ -47,6 +47,7 @@ class MetaParser(LoggingMixin, Parser):
         basedir: pathlib.Path
             The data set base directory
         """
+        print("parsers.meta.py  Metaparser._init_")
         super().__init__(basedir)
 
         self._parser = None
@@ -76,6 +77,7 @@ class MetaParser(LoggingMixin, Parser):
         IOError
             If the data set cannot be parsed
         """
+        print("parsers.meta.py  Metaparser.num_instances")
         if not self.can_parse():
             raise IOError("unable to parse data set at {}".format(self._basedir))
 
@@ -98,6 +100,7 @@ class MetaParser(LoggingMixin, Parser):
         IOError
             If the data set cannot be parsed
         """
+        print("parsers.meta.py  Metaparser.num_folds")
         if not self.can_parse():
             raise IOError("unable to parse data set at {}".format(self._basedir))
 
@@ -120,6 +123,7 @@ class MetaParser(LoggingMixin, Parser):
         IOError
             If the data set cannot be parsed
         """
+        print("parsers.meta.py  Metaparser.label_map")
         if not self.can_parse():
             raise IOError("unable to parse data set at {}".format(self._basedir))
 
@@ -137,6 +141,7 @@ class MetaParser(LoggingMixin, Parser):
         bool
             True, if there is exactly one parser which can parse the data set, False otherwise
         """
+        print("parsers.meta.py  Metaparser.can_parse")
         if self._can_parse is None:
             for p in self._parsers:
                 if p.can_parse():
@@ -167,6 +172,7 @@ class MetaParser(LoggingMixin, Parser):
         IOError
             If the data set cannot be parsed
         """
+        print("parsers.meta.py  Metaparser.parse")
 
         if not self.can_parse():
             raise IOError("unable to parse data set at {}".format(self._basedir))

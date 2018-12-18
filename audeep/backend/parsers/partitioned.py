@@ -43,6 +43,7 @@ class PartitionedParser(LoggingMixin, Parser):
         basedir: pathlib.Path
             The data set base directory
         """
+        print("parsers.partitioned.py  PartitionedParser._init_")
         super().__init__(basedir)
 
         self._dirs = {
@@ -63,6 +64,7 @@ class PartitionedParser(LoggingMixin, Parser):
         bool
             True, if this parser can parse the directory structure in the data set base directory
         """
+        print("parsers.partitioned.py  PartitionedParser.can_parse")
         existing_dirs = [partition_dir for partition_dir in self._dirs.values() if partition_dir.exists()]
 
         if len(existing_dirs) == 0:
@@ -102,6 +104,7 @@ class PartitionedParser(LoggingMixin, Parser):
         IOError
             If the data set cannot be parsed
         """
+        print("parsers.partitioned.py  PartitionedParser.label_map")
         if not self.can_parse():
             raise IOError("unable to parse dataset at {}".format(self._basedir))
 
@@ -140,6 +143,7 @@ class PartitionedParser(LoggingMixin, Parser):
         IOError
             If the data set cannot be parsed
         """
+        print("parsers.partitioned.py  PartitionedParser.num_folds")
         if not self.can_parse():
             raise IOError("unable to parse dataset at {}".format(self._basedir))
 
@@ -160,6 +164,7 @@ class PartitionedParser(LoggingMixin, Parser):
         IOError
             If the data set cannot be parsed
         """
+        print("parsers.partitioned.py  PartitionedParser.num_instances")
         if not self.can_parse():
             raise IOError("unable to parse dataset at {}".format(self._basedir))
 
@@ -193,6 +198,7 @@ class PartitionedParser(LoggingMixin, Parser):
         IOError
             If the data set cannot be parsed
         """
+        print("parsers.partitioned.py  PartitionedParser.parse")
         if not self.can_parse():
             raise IOError("unable to parse dataset at {}".format(self._basedir))
 

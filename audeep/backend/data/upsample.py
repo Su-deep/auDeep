@@ -41,6 +41,7 @@ def _invert_label_map(label_map: Mapping[str, int]) -> Mapping[int, str]:
         The inverted label map, which maps numeric label values to nominal label values
     """
     # noinspection PyTypeChecker
+    print("data.upsample.py _invert_label_map")
     return dict(map(reversed, label_map.items()))
 
 
@@ -70,6 +71,7 @@ def upsample(data_set: DataSet,
     DataSet
         A new data set in which the classes in the specified partitions are balanced
     """
+    print("data.upsample.py upsample")
     log = logging.getLogger(__name__)
 
     if isinstance(partitions, Partition):

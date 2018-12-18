@@ -43,6 +43,7 @@ def lrelu(input: tf.Tensor,
     tf.Tensor
         Leaky rectified linear activation of the input tensor
     """
+    print("model.ops.py lrelu")
     with tf.variable_scope(scope=name):
         # noinspection PyTypeChecker
         return tf.maximum(input, input * leak,
@@ -77,6 +78,7 @@ def batch_norm(input: tf.Tensor,
     tf.Tensor
         The batch-normalized input tensor
     """
+    print("model.ops.py batch_norm")
     return tf.contrib.layers.batch_norm(input,
                                         decay=momentum,
                                         updates_collections=None,
@@ -112,6 +114,7 @@ def linear(input: tf.Tensor,
     tf.Tensor
         The linearly transformed input tensor
     """
+    print("model.ops.py linear")
     shape = input.get_shape().as_list()
 
     with tf.variable_scope(name):
@@ -165,6 +168,7 @@ def conv2d(input: tf.Tensor,
     tf.Tensor
         The result of applying a 2D-convolution to the input tensor.
     """
+    print("model.ops.py conv2D")
     shape = input.get_shape().as_list()
 
     with tf.variable_scope(name):
@@ -224,6 +228,7 @@ def deconv2d(input: tf.Tensor,
     tf.Tensor
         The result of applying a 2D-deconvolution to the input tensor
     """
+    print("model.ops.py deconv2d")
     shape = input.get_shape().as_list()
 
     with tf.variable_scope(name):
@@ -264,6 +269,7 @@ def flatten_time(inputs: tf.Tensor):
     tf.Tensor
         The input tensor with flattened time dimension, of shape [max_time * batch_size, num_features]
     """
+    print("model.ops.py flatten_time")
     max_time, batch_size, _ = tf.unstack(tf.shape(inputs))
     num_features = inputs.shape[2].value
 
@@ -294,6 +300,7 @@ def restore_time(inputs: tf.Tensor,
     tf.Tensor
         The input tensor with restored time dimension, of shape [max_time, batch_size, num_features]
     """
+    print("model.ops.py restore_time")
     return tf.reshape(inputs, shape=[max_time, batch_size, num_features], name="restore_time")
 
 
@@ -323,6 +330,7 @@ def time_distributed_linear(inputs: tf.Tensor,
     tf.Tensor
         The linearly transformed input sequences, of shape [max_time, batch_size, output_size]
     """
+    print("model.ops.py time_distributed_linear")
     max_time, batch_size, _ = tf.unstack(tf.shape(inputs))
     static_shape = inputs.shape.as_list()
 
@@ -352,6 +360,7 @@ def rank(tensor: tf.Tensor) -> int:
     int 
         The rank of the input tensor
     """
+    print("model.ops.py rank")
     return tensor.shape.ndims
 
 
@@ -382,6 +391,7 @@ def window_features(inputs: tf.Tensor,
     tf.Tensor
         A tensor containing the windowed features of the input tensor, with shape [num_windows, batch_size, window_width]
     """
+    print("model.ops.py window_features")
     if rank(inputs) != 2:
         raise ValueError("rank of inputs must be 2 ([batch_size, num_features]), is: {}".format(rank(inputs)))
 

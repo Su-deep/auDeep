@@ -88,6 +88,7 @@ class Preprocessor(LoggingMixin):
         mean_norm: bool, optional
             Apply mean normalization to spectrograms
         """
+        print("training.preprocessing.py  Preprocessor.__init__")
         super().__init__()
 
         self._channel_fusion = channel_fusion
@@ -124,6 +125,7 @@ class Preprocessor(LoggingMixin):
         t: list of numpy.ndarray
             A list containing the time values in seconds for each entry on the time axis of each chunk, in order
         """
+        print("training.preprocessing.py  Preprocessor.process")
         if not file.exists():
             raise IOError("failed to open audio file at {}".format(file))
 

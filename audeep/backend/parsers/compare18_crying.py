@@ -37,12 +37,14 @@ _COMPARE18_CRYING_LABEL_MAP = {
 class Compare18CryingParser(LoggingMixin, Parser):
 
     def __init__(self, basedir: Path):
+        print("parsers.compare18_crying.py Compare18CryingParser._init_")
         super().__init__(basedir)
 
         self._metadata_cache = None
         self._audio_dir = basedir / "wav"
 
     def _metadata(self) -> pd.DataFrame:
+        print("parsers.compare18_crying.py Compare18CryingParser._metadata")
         if not self.can_parse():
             raise IOError("unable to parse the ComParE 2018 Crying dataset at {}".format(self._basedir))
         if self._metadata_cache is None:
@@ -59,6 +61,7 @@ class Compare18CryingParser(LoggingMixin, Parser):
         return self._metadata_cache
 
     def can_parse(self) -> bool:
+        print("parsers.compare18_crying.py Compare18CryingParser.can_parse")
         metadata_file = self._basedir / "lab" / "ComParE2018_Crying.tsv"
         metadata_file_confidential = self._basedir / "lab" / "ComParE2018_Crying_confidential.tsv"
 
@@ -76,10 +79,12 @@ class Compare18CryingParser(LoggingMixin, Parser):
 
     @property
     def label_map(self) -> Optional[Mapping[str, int]]:
+        print("parsers.compare18_crying.py Compare18CryingParser.label_map")
         return _COMPARE18_CRYING_LABEL_MAP
 
     @property
     def num_instances(self) -> int:
+        print("parsers.compare18_crying.py Compare18CryingParser.num_instances")
         if not self.can_parse():
             raise IOError("Unable to parse ComParE 2018 Crying data set at {}".format(self._basedir))
 
@@ -87,12 +92,14 @@ class Compare18CryingParser(LoggingMixin, Parser):
 
     @property
     def num_folds(self) -> int:
+        print("parsers.compare18_crying.py Compare18CryingParser.num_folds")
         if not self.can_parse():
             raise IOError("Unable to parse ComParE 2018 Crying data set at {}".format(self._basedir))
 
         return 0
 
     def parse(self) -> Sequence[_InstanceMetadata]:
+        print("parsers.compare18_crying.py Compare18CryingParser.parse")
         if not self.can_parse():
             raise IOError("unable to parse dataset at {}".format(self._basedir))
 

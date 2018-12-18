@@ -23,6 +23,7 @@ class MLPModel:
     def __init__(self,
                  num_layers: int,
                  num_hidden: int):
+        print("model.mlp.py MLPModel.__init__")
         self.num_layers = num_layers
         self.num_hidden = num_hidden
 
@@ -30,6 +31,7 @@ class MLPModel:
                   inputs: tf.Tensor,
                   keep_prob: float,
                   num_classes: int) -> tf.Tensor:
+        print("model.mlp.py MLPModel.inference")
         num_features = inputs.shape[1]
 
         layer_input = inputs
@@ -57,17 +59,20 @@ class MLPModel:
 
     def prediction(self,
                    logits: tf.Tensor) -> tf.Tensor:
+        print("model.mlp.py MLPModel.prediction")
         return tf.argmax(logits, axis=1)
 
     def loss(self,
              logits: tf.Tensor,
              targets: tf.Tensor) -> tf.Tensor:
+        print("model.mlp.py MLPModel.loss")
         with tf.variable_scope("loss"):
             return tf.reduce_mean(tf.nn.sparse_softmax_cross_entropy_with_logits(labels=targets, logits=logits))
 
     def optimize(self,
                  loss: tf.Tensor,
                  learning_rate: float) -> tf.Operation:
+        print("model.mlp.py MLPModel.optimize")
         with tf.variable_scope("optimize"):
             optimizer = tf.train.AdamOptimizer(learning_rate=learning_rate)
 

@@ -36,9 +36,11 @@ class InspectRaw(LoggingMixin, Command):
     """
 
     def __init__(self, app, app_args):
+        print("cli.inspect.py  InspectRaw.__init__")
         super().__init__(app, app_args)
 
     def get_parser(self, prog_name):
+        print("cli.inspect.py  InspectRaw.get_parser")
         parser = super().get_parser(prog_name)
 
         parser.add_argument("--basedir",
@@ -55,6 +57,7 @@ class InspectRaw(LoggingMixin, Command):
         return parser
 
     def take_action(self, parsed_args):
+        print("cli.inspect.py  InspectRaw.take_action")
         module_name, class_name = parsed_args.parser.rsplit(".", 1)
         parser_class = getattr(importlib.import_module(module_name), class_name)
 
@@ -120,6 +123,7 @@ class InspectNetCDF(Command):
     """
 
     def get_parser(self, prog_name):
+        print("cli.inspect.py  InspectNetCDF.get_parser")
         parser = super().get_parser(prog_name)
 
         parser.add_argument("--input",
@@ -139,6 +143,7 @@ class InspectNetCDF(Command):
         return parser
 
     def take_action(self, parsed_args):
+        print("cli.inspect.py  InspectNetCDF.take_action")
         if not parsed_args.input.exists():
             raise IOError("unable to open data set at {}".format(parsed_args.input))
 

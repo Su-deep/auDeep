@@ -31,6 +31,7 @@ class Export(Command):
     """
 
     def get_parser(self, prog_name):
+        print("cli.export.py  Export.get_parser")
         parser = super().get_parser(prog_name)
 
         parser.add_argument("--input",
@@ -58,6 +59,7 @@ class Export(Command):
         return parser
 
     def take_action(self, parsed_args):
+        print("cli.export.py  Export.take_action")
         if not parsed_args.input.exists():
             raise IOError("failed to open data set at {}".format(parsed_args.input))
 

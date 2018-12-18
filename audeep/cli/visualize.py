@@ -37,9 +37,11 @@ class VisualizeTSNE(LoggingMixin, Command):
     """
 
     def __init__(self, app, app_args):
+        print("cli.visualize.py  VisualizeTSNE.__init__")
         super().__init__(app, app_args)
 
     def get_parser(self, prog_name):
+        print("cli.visualize.py  VisualizeTSNE.get_parser")
         parser = super(VisualizeTSNE, self).get_parser(prog_name)
 
         parser.add_argument("--input",
@@ -60,6 +62,7 @@ class VisualizeTSNE(LoggingMixin, Command):
     def plot_with_labels(self,
                          data_set: DataSet,
                          embedding: np.ndarray):
+        print("cli.visualize.py  VisualizeTSNE.plot_with_labels")
         assert embedding.shape[0] >= len(data_set.label_map), "More labels than weights"
 
         # use pandas to get indices of instances with the same label
@@ -90,6 +93,7 @@ class VisualizeTSNE(LoggingMixin, Command):
         plt.show()
 
     def take_action(self, parsed_args):
+        print("cli.visualize.py  VisualizeTSNE.take_action")
         if not parsed_args.input.exists():
             raise IOError("failed to open data set at {}".format(parsed_args.input))
 

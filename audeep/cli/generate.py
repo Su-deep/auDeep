@@ -55,12 +55,14 @@ class GenerateBaseCommand(Command):
         default_batch_size: int
             Default batch size
         """
+        print("cli.generate.py  GeneratebaseCommand.__init__")
         super().__init__(app, app_args)
 
         self._wrapper = wrapper
         self._default_batch_size = default_batch_size
 
     def get_parser(self, prog_name):
+        print("cli.generate.py  GeneratebaseCommand.get_parser")
         parser = super().get_parser(prog_name)
 
         parser.add_argument("--batch-size",
@@ -92,6 +94,7 @@ class GenerateBaseCommand(Command):
         return parser
 
     def take_action(self, parsed_args):
+        print("cli.generate.py  GeneratebaseCommand.take_action")
         if not parsed_args.input.exists():
             raise IOError("failed to open data set at {}".format(parsed_args.input))
 
@@ -124,6 +127,7 @@ class GenerateTimeAutoencoder(GenerateBaseCommand):
     def __init__(self,
                  app,
                  app_args):
+        print("cli.generate.py  GenerateTimeAutoencoder.__init__")
         super().__init__(app, app_args, TimeAutoencoderWrapper())
 
 
@@ -135,6 +139,7 @@ class GenerateFrequencyAutoencoder(GenerateBaseCommand):
     def __init__(self,
                  app,
                  app_args):
+        print("cli.generate.py  GenerateFrequencyAutoencoder.__init__")
         super().__init__(app, app_args,
                          FrequencyAutoencoderWrapper(),
                          default_batch_size=64)
@@ -148,4 +153,5 @@ class GenerateFrequencyTimeAutoencoder(GenerateBaseCommand):
     def __init__(self,
                  app,
                  app_args):
+        print("cli.generate.py  GenerateFrequencyTimeAutoencoder.__init__")
         super().__init__(app, app_args, FrequencyTimeAutoencoderWrapper())

@@ -45,6 +45,7 @@ def uar_score(labels: np.ndarray,
     float
         The unweighted average recall for the specified true labels and predictions
     """
+    print("training.evaluation.py  uar_score")
     return recall_score(labels, predictions, average="macro")
 
 
@@ -72,6 +73,7 @@ class CrossValidatedEvaluation(LoggingMixin):
         upsample: bool
             Balance classes in the training splits of each fold by upsampling instances
         """
+        print("training.evaluation.py  CrossValidatedEvaluation._init_")
         super().__init__()
 
         self._learner = learner
@@ -96,6 +98,7 @@ class CrossValidatedEvaluation(LoggingMixin):
         float
             Returns the accuracy of the learner on the last data set passed to the `run` method
         """
+        print("training.evaluation.py  CrossValidatedEvaluation.accuracy")
         return self._accuracy
 
     @property
@@ -112,6 +115,7 @@ class CrossValidatedEvaluation(LoggingMixin):
             Returns a 95% confidence interval for the accuracy of the learner on the last data set passed to the `run` 
             method
         """
+        print("training.evaluation.py  CrossValidatedEvaluation.accuracy_confidence_interval")
         return self._accuracy_confidence_interval
 
     @property
@@ -127,6 +131,7 @@ class CrossValidatedEvaluation(LoggingMixin):
         float
             Returns the unweighted average recall of the learner on the last data set passed to the `run` method
         """
+        print("training.evaluation.py  CrossValidatedEvaluation.uar")
         return self._uar
 
     @property
@@ -143,6 +148,7 @@ class CrossValidatedEvaluation(LoggingMixin):
             Returns a 95% confidence interval for the unweighted average recall of the learner on the last data set 
             passed to the `run` method
         """
+        print("training.evaluation.py  CrossValidatedEvaluation.uar_confidence_interval")
         return self._uar_confidence_interval
 
     @property
@@ -159,6 +165,7 @@ class CrossValidatedEvaluation(LoggingMixin):
         numpy.ndarray
             The confusion matrix of the learner on the last data set passed to the `run` method
         """
+        print("training.evaluation.py  CrossValidatedEvaluation.confusion_matrix")
         return self._confusion_matrix
 
     def run(self,
@@ -178,6 +185,7 @@ class CrossValidatedEvaluation(LoggingMixin):
         ValueError 
             If the specified data set does not have cross-validation information
         """
+        print("training.evaluation.py  CrossValidatedEvaluation.run")
         if not data_set.has_cv_info:
             raise ValueError("data set does not have cross validation info")
 
@@ -263,6 +271,7 @@ class PartitionedEvaluation(LoggingMixin):
         upsample: bool
             Balance classes in the training partitions by upsampling instances
         """
+        print("training.evaluation.py  PartitionedEvaluation._init_")
         super().__init__()
 
         self._learner = learner
@@ -287,6 +296,7 @@ class PartitionedEvaluation(LoggingMixin):
         float
             Returns the accuracy of the learner on the last data set passed to the `run` method
         """
+        print("training.evaluation.py  PartitionedEvaluation.accuracy")
         return self._accuracy
 
     @property
@@ -302,6 +312,7 @@ class PartitionedEvaluation(LoggingMixin):
         float
             Returns the unweighted average recall of the learner on the last data set passed to the `run` method
         """
+        print("training.evaluation.py  PartitionedEvaluation.uar")
         return self._uar
 
     @property
@@ -317,6 +328,7 @@ class PartitionedEvaluation(LoggingMixin):
         numpy.ndarray
             The confusion matrix of the learner on the last data set passed to the `run` method
         """
+        print("training.evaluation.py  PartitionedEvaluation.confusion_matrix")
         return self._confusion_matrix
 
     def run(self,
@@ -336,6 +348,7 @@ class PartitionedEvaluation(LoggingMixin):
         ValueError 
             If the specified data set does not have partition information
         """
+        print("training.evaluation.py  PartitionedEvaluation.run")
         if not data_set.has_partition_info:
             raise ValueError("data set does not have partition info")
 

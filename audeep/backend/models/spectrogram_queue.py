@@ -52,6 +52,7 @@ class SpectrogramQueue:
         batch_size: int
             The batch size in which to read instances
         """
+        print("model.spectrogram_queue.py SpectrogramQueue._init_")
         if len(feature_shape) != 2:
             raise ValueError("feature shape must be two-dimensional")
 
@@ -72,6 +73,7 @@ class SpectrogramQueue:
         tf.Tensor
             A tensor containing batched instances read from the TFRecords file passed to this class
         """
+        print("model.spectrogram_queue.py SpectrogramQueue.input_queue")
         filename_tensor = tf.constant(value=[str(file) for file in self._record_files], dtype=tf.string,
                                       name="filenames")
         filename_queue = tf.train.string_input_producer(filename_tensor, num_epochs=None)

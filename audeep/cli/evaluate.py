@@ -43,11 +43,13 @@ class EvaluateBaseCommand(LoggingMixin, Command):
     def __init__(self,
                  app,
                  app_args):
+        print("cli.evaluate.py  EvaluateBaseCommand.__init__")
         super().__init__(app, app_args)
 
         self._learner = None
 
     def get_parser(self, prog_name):
+        print("cli.evaluate.py  EvaluateBaseCommand.get_parser")
         parser = super().get_parser(prog_name)
 
         parser.add_argument("--input",
@@ -88,6 +90,7 @@ class EvaluateBaseCommand(LoggingMixin, Command):
         This function plots the confusion matrix.
         Normalization can be applied by setting `normalize=True`.
         """
+        print("cli.evaluate.py  EvaluateBaseCommand.plot_confusion_matrix")
         cm_norm = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis]
         plt.imshow(cm_norm, interpolation='nearest', cmap=cmap)
         plt.title(title)
@@ -117,9 +120,11 @@ class EvaluateBaseCommand(LoggingMixin, Command):
 
     @abc.abstractmethod
     def _get_learner(self, parsed_args) -> LearnerBase:
+        print("cli.evaluate.py  EvaluateBaseCommand._get_learner")
         pass
 
     def take_action(self, parsed_args):
+        print("cli.evaluate.py  EvaluateBaseCommand.take_action")
         self._learner = self._get_learner(parsed_args)
 
         if not parsed_args.input.exists():
@@ -204,6 +209,7 @@ class MLPEvaluation(EvaluateBaseCommand):
     """
 
     def get_parser(self, prog_name):
+        print("cli.evaluate.py  MLPEvaluation.get_parser")
         parser = super().get_parser(prog_name)
 
         parser.add_argument("--learning-rate",
@@ -233,6 +239,7 @@ class MLPEvaluation(EvaluateBaseCommand):
         return parser
 
     def _get_learner(self, parsed_args) -> LearnerBase:
+        print("cli.evaluate.py  MLPEvaluation._get_learner")
         checkpoint_dir = parsed_args.input.parent / "evaluation"  # type: Path
 
         if not checkpoint_dir.exists():
@@ -253,6 +260,7 @@ class SVMEvaluation(EvaluateBaseCommand):
     """
 
     def get_parser(self, prog_name):
+        print("cli.evaluate.py  SVMEvaluation.get_parser")
         parser = super().get_parser(prog_name)
 
         parser.add_argument("--complexity",
@@ -263,4 +271,5 @@ class SVMEvaluation(EvaluateBaseCommand):
         return parser
 
     def _get_learner(self, parsed_args) -> LearnerBase:
+        print("cli.evaluate.py  SVMEvaluation.get_parser")
         return LibLINEARLearner(complexity=parsed_args.complexity)

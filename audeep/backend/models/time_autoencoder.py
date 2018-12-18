@@ -65,6 +65,7 @@ class TimeAutoencoder(LoggingMixin):
             Scalar tensor containing the probability at each time step to feed the previous output of the decoder as 
             input 
         """
+        print("model.time_autoencoder.py TimeAutoencoder._init_")
         super().__init__()
 
         # inputs
@@ -101,6 +102,7 @@ class TimeAutoencoder(LoggingMixin):
         tf.Tensor
             The number of time steps in the input sequences
         """
+        print("model.time_autoencoder.py TimeAutoencoder.max_time")
         return tf.shape(self.inputs)[0]
 
     @property
@@ -115,6 +117,7 @@ class TimeAutoencoder(LoggingMixin):
         tf.Tensor
             The number of input sequences per batch
         """
+        print("model.time_autoencoder.py TimeAutoencoder.batch_size")
         return tf.shape(self.inputs)[1]
 
     @property
@@ -129,6 +132,7 @@ class TimeAutoencoder(LoggingMixin):
         int
             The number of features in each time step of the input sequence
         """
+        print("model.time_autoencoder.py TimeAutoencoder.num_features")
         return self.inputs.shape.as_list()[2]
 
     @scoped_subgraph
@@ -143,6 +147,7 @@ class TimeAutoencoder(LoggingMixin):
         tf.Tensor
             The target sequences, of shape [max_time, batch_size, num_features]
         """
+        print("model.time_autoencoder.py TimeAutoencoder.targets")
         return self.inputs[::-1]
 
     @scoped_subgraph
@@ -158,6 +163,7 @@ class TimeAutoencoder(LoggingMixin):
         StandardRNN
             The encoder RNN
         """
+        print("model.time_autoencoder.py TimeAutoencoder.encoder")
         return StandardRNN(architecture=self.encoder_architecture,
                            inputs=self.inputs,
                            initial_state=None,
@@ -178,6 +184,7 @@ class TimeAutoencoder(LoggingMixin):
         tf.Tensor
             The hidden representation of the input sequences, of shape [batch_size, decoder_state_size]
         """
+        print("model.time_autoencoder.py TimeAutoencoder.representation")
         rep = tf.tanh(linear(input=self.encoder.final_state,
                              output_size=self.decoder_architecture.state_size))
 
@@ -199,6 +206,7 @@ class TimeAutoencoder(LoggingMixin):
         tf.Tensor
             The decoder RNN input sequences, of shape [max_time, batch_size, num_features]
         """
+        print("model.time_autoencoder.py TimeAutoencoder.decoder_inputs")
         # noinspection PyTypeChecker
         decoder_inputs = self.targets[:self.max_time - 1]
         decoder_inputs = tf.pad(decoder_inputs, paddings=[[1, 0], [0, 0], [0, 0]], mode="constant")
@@ -221,6 +229,7 @@ class TimeAutoencoder(LoggingMixin):
         _RNNBase
             The decoder RNN
         """
+        print("model.time_autoencoder.py TimeAutoencoder.decoder")
         if self.decoder_architecture.bidirectional:
             self.log.warn("'decoder_feed_previous_prob' set on bidirectional decoder will be ignored. If you have set "
                           "--decoder-feed-prob 0, or omitted the option, the network will behave as expected and you "
@@ -260,6 +269,7 @@ class TimeAutoencoder(LoggingMixin):
         tf.Tensor
             The reconstruction of the input sequence, of shape [max_time, batch_size, num_features]
         """
+        print("model.time_autoencoder.py TimeAutoencoder.reconstruction")
         output = tf.tanh(time_distributed_linear(inputs=self.decoder.output,
                                                  output_size=self.num_features))
 
@@ -281,6 +291,7 @@ class TimeAutoencoder(LoggingMixin):
         tf.Tensor
             Scalar tensor containing the reconstruction loss averaged over the entire input batch
         """
+        print("model.time_autoencoder.py TimeAutoencoder.loss")
         reconstruction = self.reconstruction
 
         if self.mask_silence:
@@ -305,6 +316,7 @@ class TimeAutoencoder(LoggingMixin):
         tf.Operation
             The optimization operation used for training the autoencoder
         """
+        print("model.time_autoencoder.py TimeAutoencoder.optimizer")
         optimizer = tf.train.AdamOptimizer(learning_rate=self.learning_rate)
         gvs = optimizer.compute_gradients(self.loss)
 

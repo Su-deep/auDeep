@@ -59,6 +59,7 @@ class RNNArchitecture:
         cell_type: CellType
             The type of RNN cell to use
         """
+        print("model.rnn_base.py RNNArchitecture.__init__")
         self.num_layers = num_layers
         self.num_units = num_units
         self.bidirectional = bidirectional
@@ -74,6 +75,7 @@ class RNNArchitecture:
         int
             The state size of an RNN with this architecture
         """
+        print("model.rnn_base.py RNNArchitecture.state_size")
         size = self.num_units * self.num_layers
 
         if self.cell_type == CellType.LSTM:
@@ -128,6 +130,7 @@ class _RNNBase:
         keep_prob: tf.Tensor, optional
             Probability to keep hidden activations
         """
+        print("model.rnn_base.py RNNBase._init_")
         # inputs
         self.inputs = inputs
         self.initial_state = initial_state
@@ -158,6 +161,7 @@ class _RNNBase:
         int
             The number of features in the output sequence of this RNN
         """
+        print("model.rnn_base.py RNNBase.output_size")
         pass
 
     @property
@@ -173,6 +177,7 @@ class _RNNBase:
         tf.Tensor
             The number of steps in the input and output sequences
         """
+        print("model.rnn_base.py RNNBase.max_step")
         return tf.shape(self.inputs)[0]
 
     @property
@@ -188,6 +193,7 @@ class _RNNBase:
         tf.Tensor
             The batch size in the input and output sequences
         """
+        print("model.rnn_base.py RNNBase.batch_size")
         return tf.shape(self.inputs)[1]
 
     @property
@@ -202,6 +208,7 @@ class _RNNBase:
         int
             The number of features in the input sequence
         """
+        print("model.rnn_base.py RNNBase.num_features")
         return self.inputs.shape.as_list()[2]
 
     def _create_rnn_cell(self):
@@ -213,6 +220,7 @@ class _RNNBase:
         rnn cell
             A single RNN cell according to the architecture of this RNN
         """
+        print("model.rnn_base.py RNNBase._create_rnn_cell")
         keep_prob = 1.0 if self.keep_prob is None else self.keep_prob
 
         if self.cell_type == CellType.GRU:
@@ -232,6 +240,7 @@ class _RNNBase:
             A list of MultiRNNCells containing one entry if the RNN is unidirectional, and two identical entries if the
             RNN is bidirectional
         """
+        print("model.rnn_base.py RNNBase._create_cells")
         cells = [[self._create_rnn_cell()
                   for _ in range(self.num_layers)]
                  for _ in range(2 if self.bidirectional else 1)]
@@ -251,6 +260,7 @@ class _RNNBase:
             A tensor of shape [batch_size] representing the length of each sequence in the input batch
         """
         # for now, assume equal-length sequences
+        print("model.rnn_base.py RNNBase.sequence_length")
         return tf.fill(dims=[self.batch_size], value=self.max_step)
 
     @scoped_subgraph
@@ -268,6 +278,7 @@ class _RNNBase:
         tuple of tf.Tensor
             A possibly nested tuple of initial state tensors for the RNN cells
         """
+        print("model.rnn_base.py RNNBase.initial_states_tuple")
         if self.initial_state is None:
             initial_states = tf.zeros(shape=[self.batch_size, self.state_size], dtype=tf.float32)
         else:
@@ -308,6 +319,7 @@ class _RNNBase:
         final_state: tf.Tensor
             A single tensor containing the final states of the RNN cells, of shape [batch_size, state_size]
         """
+        print("model.rnn_base.py RNNBase.rnn_output_and_state")
         pass
 
     @property
@@ -323,6 +335,7 @@ class _RNNBase:
         tf.Tensor
             A tensor containing the RNN output sequence, of shape [max_step, batch_size, output_size]
         """
+        print("model.rnn_base.py RNNBase.output")
         return self.rnn_output_and_state[0]
 
     @property
@@ -335,6 +348,7 @@ class _RNNBase:
         tf.Tensor
             A single tensor containing the final states of the RNN cells, of shape [batch_size, state_size]
         """
+        print("model.rnn_base.py RNNBase.final_state")
         return self.rnn_output_and_state[1]
 
 
@@ -370,6 +384,7 @@ class StandardRNN(_RNNBase):
         input_noise: tf.Tensor, optional
             Probability to replace steps in the input sequence with zeros
         """
+        print("model.rnn_base.py StandardRNN._init_")
         super().__init__(architecture, inputs, initial_state, keep_prob)
 
         self.input_noise = input_noise
@@ -398,6 +413,7 @@ class StandardRNN(_RNNBase):
         --------
         _RNNBase.output_size
         """
+        print("model.rnn_base.py StandardRNN.output_size")
         return self.num_units * (2 if self.bidirectional else 1)
 
     @scoped_subgraph
@@ -414,6 +430,7 @@ class StandardRNN(_RNNBase):
         tf.Tensor
             The input sequence, with noise added according to the `input_noise` parameter
         """
+        print("model.rnn_base.py StandardRNN.noisy_inputs")
         if self.input_noise is None:
             return self.inputs
 
@@ -427,6 +444,7 @@ class StandardRNN(_RNNBase):
 
     @scoped_subgraph
     def rnn_output_and_state(self):
+        print("model.rnn_base.py StandardRNN.rnn_output_and_state")
         cells = self._create_cells()
 
         if self.bidirectional:
@@ -504,6 +522,7 @@ class FeedPreviousRNN(_RNNBase):
         feed_previous_prob: tf.Tensor, optional
             Probability at each time step to feed the output of the previous time step as input to the RNN
         """
+        print("model.rnn_base.py FeedPreviousRNN._init_")
         super().__init__(architecture, inputs, initial_state, keep_prob)
 
         self.feed_previous_prob = feed_previous_prob
@@ -527,6 +546,7 @@ class FeedPreviousRNN(_RNNBase):
         int
             The number of features in the output sequence of this RNN
         """
+        print("model.rnn_base.py FeedPreviousRNN.output_size")
         return self.num_features * (2 if self.bidirectional else 1)
 
     def _feed_previous_rnn(self,
@@ -556,6 +576,7 @@ class FeedPreviousRNN(_RNNBase):
             A possible nested tuple of final states of the RNN cells, with the same structure as the `initial_state` 
             tuple
         """
+        print("model.rnn_base.py FeedPreviousRNN._feed_previous_rnn")
         # input sequence
         if reverse:
             input_sequence = tf.reverse(self.inputs, axis=[0])
@@ -577,6 +598,7 @@ class FeedPreviousRNN(_RNNBase):
             feed_mask = feed_mask < self.feed_previous_prob
 
         def loop_fn_initial():
+            print("model.rnn_base.py FeedPreviousRNN.loop_fn_initial")
             initial_elements_finished = (0 >= self.sequence_length)
 
             initial_input = tf.zeros([self.batch_size, self.num_features], dtype=tf.float32)
@@ -591,6 +613,7 @@ class FeedPreviousRNN(_RNNBase):
                     initial_loop_state)
 
         def loop_fn_transition(time, cell_output, cell_state, previous_loop_state):
+            print("model.rnn_base.py FeedPreviousRNN.loop_fn_transition")
             elements_finished = (time >= self.sequence_length)
 
             next_input = tf.where(feed_mask[time - 1],
@@ -605,6 +628,7 @@ class FeedPreviousRNN(_RNNBase):
                     loop_state)
 
         def loop_fn(time, previous_output, previous_state, previous_loop_state):
+            print("model.rnn_base.py FeedPreviousRNN.loop_fn")
             if previous_state is None:  # time == 0
                 assert previous_output is None and previous_state is None
                 return loop_fn_initial()
@@ -627,6 +651,7 @@ class FeedPreviousRNN(_RNNBase):
 
     @scoped_subgraph
     def rnn_output_and_state(self):
+        print("model.rnn_base.py FeedPreviousRNN.rnn_output_and_state")
         cells = self._create_cells()
 
         if self.bidirectional:

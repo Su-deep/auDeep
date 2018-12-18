@@ -44,12 +44,14 @@ class ESCParser(LoggingMixin, Parser):
         basedir: pathlib.Path
             The data set base directory
         """
+        print("parsers.esc.py  ESCParser__init")
         super().__init__(basedir)
 
         self._class_dirs = sorted([file for file in basedir.glob("*")
                                    if file.is_dir() and not file.name.startswith(".")], key=lambda x: x.name)
         self._num_instances_cache = None
         self._label_map_cache = None
+
 
     def can_parse(self) -> bool:
         """
@@ -60,6 +62,7 @@ class ESCParser(LoggingMixin, Parser):
         bool
             True, if this parser can parse the directory structure in the data set base directory
         """
+        print("parsers.esc.py  ESCParser.can_parse")
         class_dir_pattern = re.compile("^\d{3} - .+")
 
         for class_dir in self._class_dirs:  # type: Path
@@ -104,6 +107,8 @@ class ESCParser(LoggingMixin, Parser):
         IOError
             If the data set cannot be parsed
         """
+        print("parsers.esc.py  ESCParser.num_instances")
+        print("esc.py_property_num_instances")
         if not self.can_parse():
             raise IOError("unable to parse ESC dataset at {}".format(self._basedir))
 
@@ -131,6 +136,7 @@ class ESCParser(LoggingMixin, Parser):
         IOError
             If the data set cannot be parsed
         """
+        print("parsers.esc.py  ESCParser.num_folds")
         if not self.can_parse():
             raise IOError("unable to parse ESC dataset at {}".format(self._basedir))
 
@@ -155,6 +161,7 @@ class ESCParser(LoggingMixin, Parser):
         IOError
             If the data set cannot be parsed
         """
+        print("parsers.esc.py  ESCParser.label_map")
         if not self.can_parse():
             raise IOError("unable to parse ESC dataset at {}".format(self._basedir))
 
@@ -185,6 +192,7 @@ class ESCParser(LoggingMixin, Parser):
         IOError
             If the data set cannot be parsed
         """
+        print("parsers.esc.py  ESCParser.parse")
         if not self.can_parse():
             raise IOError("unable to parse ESC dataset at {}".format(self._basedir))
 
