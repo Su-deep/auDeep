@@ -1,0 +1,10 @@
+cliff
+liac-arff
+matplotlib
+netCDF4
+pandas
+pysoundfile
+scipy
+sklearn
+xarray==0.10.0
+tensorflow-gpu==1.1.0

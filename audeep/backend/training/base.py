@@ -61,6 +61,7 @@ class GraphWrapper(LoggingMixin):
         saver: tf.train.Saver
             Saver for restoring variables from checkpoint files
         """
+        print("trainingA.base.py  GraphWrapper.__init__")
         super().__init__()
 
         self.graph = graph
@@ -102,6 +103,7 @@ class GraphWrapper(LoggingMixin):
             The global step number from which variables were restored, or None if no checkpoint files were found and
             variables were initialized using their initializers
         """
+        print("trainingA.base.py  GraphWrapper.restore_or_initialize")
         if global_step is None:
             self.log.debug("no global step specified - searching for checkpoints")
 
@@ -128,6 +130,7 @@ class GraphWrapper(LoggingMixin):
 
     @property
     def representation(self) -> tf.Tensor:
+        print("trainingA.base.py  GraphWrapper.representation")
         """
         Returns a tensor containing the hidden representation of input sequences.
         
@@ -140,6 +143,7 @@ class GraphWrapper(LoggingMixin):
 
     @property
     def loss(self) -> tf.Tensor:
+        print("trainingA.base.py  GraphWrapper.loss")
         """
         Returns a scalar tensor containing the loss of a batch.
         
@@ -160,6 +164,7 @@ class GraphWrapper(LoggingMixin):
         tf.Operation
             An operation for performing a single training step
         """
+        print("trainingA.base.py  GraphWrapper.train_op")
         return self.graph.get_collection("train_op")[0]
 
 
@@ -218,11 +223,13 @@ class BaseFeatureLearningWrapper(LoggingMixin):
             Additional keyword arguments. Any additional keyword arguments passed to the `initialize_model` method will
             be forwarded to this method. They can be used, for example, to specify the model architecture.
         """
+        print("trainingA.base.py  BaseFeatureLearningWrapper._create_model")
         pass
 
     @abc.abstractmethod
     def _training_parameters(self,
                              **kwargs) -> Dict[str, tf.Tensor]:
+        print("trainingA.base.py  BaseFeatureLearningWrapper._training_parameters")
         """
         Provide bindings during training for any additional input placeholders created by the `_create_model` function.
         
@@ -231,6 +238,7 @@ class BaseFeatureLearningWrapper(LoggingMixin):
         a wrapper around a model which requires a learning rate value as input. In order to achieve this, a scalar
         placeholder with name "learning_rate" is added to the graph outside the "model" variable scope in the 
         `_create_model` method:
+        
         
         >>> def _create_model(self,
         >>>                   tf_inputs: tf.Tensor,
@@ -274,6 +282,7 @@ class BaseFeatureLearningWrapper(LoggingMixin):
     @abc.abstractmethod
     def _generation_parameters(self,
                                **kwargs) -> Dict[str, tf.Tensor]:
+        print("trainingA.base.py  BaseFeatureLearningWrapper._generation_parameters")
         """
         Provide bindings during generation for any additional input placeholders created by the `_create_model` 
         function.
@@ -321,6 +330,7 @@ class BaseFeatureLearningWrapper(LoggingMixin):
             The Tensorflow graph deserialized from the specified file, with any unbound inputs bound to the respective
             tensors defined in the `input_map` parameter
         """
+        print("trainingA.base.py  BaseFeatureLearningWrapper._load_graph")
         input_map = {"$unbound_inputs_%s" % k: input_map[k] for k in input_map}
 
         saver = tf.train.import_meta_graph(str(model_filename.with_suffix(".meta")),
@@ -352,6 +362,7 @@ class BaseFeatureLearningWrapper(LoggingMixin):
         kwargs: keyword arguments
             Additional keyword arguments specifying the model architecture
         """
+        print("trainingA.base.py  BaseFeatureLearningWrapper.initialize_model")
         with tf.Graph().as_default():
             tf_inputs = tf.placeholder(name="inputs",
                                        shape=[feature_shape[0], None, feature_shape[1]],
@@ -407,6 +418,7 @@ class BaseFeatureLearningWrapper(LoggingMixin):
         --------
         GraphWrapper.restore_or_initialize
         """
+        print("trainingA.base.py  BaseFeatureLearningWrapper.train_model")
         if num_instances % batch_size == 0:
             num_batches = num_instances // batch_size
         else:
@@ -498,6 +510,7 @@ class BaseFeatureLearningWrapper(LoggingMixin):
             A data set containing the generated features for each instance in the specified data set, with the same
             metadata
         """
+        print("trainingA.base.py  BaseFeatureLearningWrapper.generate")
         self.log.info("building computation graph")
         tf.reset_default_graph()
 

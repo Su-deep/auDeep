@@ -32,6 +32,7 @@ class FrequencyTimeAutoencoderWrapper(BaseFeatureLearningWrapper):
     def _create_model(self,
                       tf_inputs: tf.Tensor,
                       **kwargs):
+        print("trainingA.frequency_time_autoencoder.py  FrequencyTimeAutoencoderWrapper._create_model")
         tf_learning_rate = tf.placeholder(name="learning_rate", shape=[], dtype=tf.float32)
         tf_keep_prob = tf.placeholder(name="keep_prob", shape=[], dtype=tf.float32)
         tf_f_encoder_noise = tf.placeholder(name="f_encoder_noise", shape=[], dtype=tf.float32)
@@ -57,6 +58,7 @@ class FrequencyTimeAutoencoderWrapper(BaseFeatureLearningWrapper):
                                      t_decoder_feed_previous_prob=tf_t_decoder_feed_previous_prob)
 
     def _training_parameters(self, **kwargs) -> Dict[str, tf.Tensor]:
+        print("trainingA.frequency_time_autoencoder.py  FrequencyTimeAutoencoderWrapper._training_parameters")
         return {
             "learning_rate": tf.constant(value=kwargs["learning_rate"],
                                          name="learning_rate"),
@@ -73,6 +75,7 @@ class FrequencyTimeAutoencoderWrapper(BaseFeatureLearningWrapper):
         }
 
     def _generation_parameters(self, **kwargs) -> Dict[str, tf.Tensor]:
+        print("trainingA.frequency_time_autoencoder.py  FrequencyTimeAutoencoderWrapper._generation_parameters")
         return {
             "learning_rate": tf.constant(value=0.0,
                                          name="learning_rate"),

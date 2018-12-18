@@ -32,6 +32,7 @@ class TimeAutoencoderWrapper(BaseFeatureLearningWrapper):
     def _create_model(self,
                       tf_inputs: tf.Tensor,
                       **kwargs):
+        print("trainingA.time_autoencoder.py  TimeAutoencoderWrapper._create_model")
         tf_learning_rate = tf.placeholder(name="learning_rate",
                                           shape=[],
                                           dtype=tf.float32)
@@ -56,6 +57,7 @@ class TimeAutoencoderWrapper(BaseFeatureLearningWrapper):
                             decoder_feed_previous_prob=tf_decoder_feed_previous_prob)
 
     def _training_parameters(self, **kwargs) -> Dict[str, tf.Tensor]:
+        print("trainingA.time_autoencoder.py  TimeAutoencoderWrapper._training_parameters")
         return {
             "learning_rate": tf.constant(value=kwargs["learning_rate"],
                                          name="learning_rate"),
@@ -68,6 +70,7 @@ class TimeAutoencoderWrapper(BaseFeatureLearningWrapper):
         }
 
     def _generation_parameters(self, **kwargs) -> Dict[str, tf.Tensor]:
+        print("trainingA.time_autoencoder.py  TimeAutoencoderWrapper._geenration_parameters")
         return {
             "learning_rate": tf.constant(value=0.0,
                                          name="learning_rate"),
